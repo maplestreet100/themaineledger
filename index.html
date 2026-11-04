@@ -9,12 +9,13 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#fbf7ef;color:#1f1c18;font:16px/1.55 'IBM Plex Sans',Arial,sans-serif}
 .w{max-width:960px;margin:0 auto;padding:0 20px}a{color:#a33a22}
-header{text-align:center;padding:28px 0 18px;border-bottom:3px double #1f1c18}
+header{text-align:center;padding-top:28px;padding-bottom:18px;border-bottom:3px double #1f1c18}
 .kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7d7468;font-weight:600}
 .mast{font-family:Newsreader,Georgia,serif;font-weight:700;font-size:44px;line-height:1.1;margin:6px 0 2px;letter-spacing:-.5px}
-.mast span{color:#a33a22}
+.mast .dot{color:#a33a22}
+@media(max-width:799px){.mast{font-size:36px}.mast .dot{display:none}.mast .town{display:block;font-size:22px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#a33a22;margin-top:4px}h1{font-size:34px}.lede{font-size:17px}}
 .rule{height:1px;background:#d9ccb4;margin:0}
-.hero{display:grid;gap:36px;padding:40px 0}
+.hero{display:grid;gap:36px;padding-top:32px;padding-bottom:40px}
 h1{font-family:Newsreader,Georgia,serif;font-size:38px;line-height:1.12;margin:0 0 14px;font-weight:700}
 .lede{font-size:18px;color:#3a352e;margin:0 0 24px}
 form{display:flex;flex-wrap:wrap;gap:10px}
@@ -26,11 +27,11 @@ button:hover{background:#a33a22}.note{font-size:13px;color:#7d7468;margin:10px 0
 .inside{background:#f4ede0;border-top:1px solid #d9ccb4;border-bottom:1px solid #d9ccb4;padding:26px 0}
 .inside ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 22px;font-family:Newsreader,Georgia,serif;font-size:19px}
 .inside li:before{content:'§ ';color:#a33a22}
-footer{padding:26px 0 40px;font-size:13px;color:#7d7468;text-align:center}
+footer{padding-top:26px;padding-bottom:40px;font-size:13px;color:#7d7468;text-align:center}
 .sr{position:absolute;left:-9999px}
-@media(min-width:800px){.mast{font-size:60px}h1{font-size:50px}.hero{grid-template-columns:1.2fr 1fr;align-items:center;padding:64px 0}}
+@media(min-width:800px){.mast{font-size:60px}h1{font-size:50px}.hero{grid-template-columns:1.2fr 1fr;align-items:center;padding-top:64px;padding-bottom:64px}}
 </style></head><body>
-<header class="w"><div class="kick">The Weekly Digest</div><div class="mast">The Maine Ledger <span>·</span> Brunswick</div><div class="kick">Midcoast Maine</div></header>
+<header class="w"><div class="kick">The Weekly Digest</div><div class="mast">The Maine Ledger <span class="dot">·</span> <span class="town">Brunswick</span></div><div class="kick">Midcoast Maine</div></header>
 <main>
 <section class="w hero"><div>
 <h1>Brunswick's week, in about five minutes.</h1>
