@@ -39,7 +39,8 @@ footer{padding-top:26px;padding-bottom:40px;font-size:13px;color:#7d7468;text-al
 <form id="f" action="https://buttondown.com/api/emails/embed-subscribe/MaineLedger" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.com/MaineLedger', 'popupwindow')">
 <label class="sr" for="email">Email address</label>
 <input type="email" name="email" id="email" placeholder="you@example.com" autocomplete="email" required>
-<input type="hidden" value="1" name="embed"><button type="submit">Subscribe</button></form>
+<input type="hidden" value="1" name="embed"><input type="hidden" name="tag" id="src-tag" value="site"><button type="submit">Subscribe</button></form>
+<script>(function(){var s=(new URLSearchParams(location.search).get('src')||'').toLowerCase();if(s==='flyer'){document.getElementById('src-tag').value='flyer';}})();</script>
 <noscript><p class="note">Or sign up directly at <a href="https://buttondown.com/MaineLedger">buttondown.com/MaineLedger</a>.</p></noscript>
 <p class="note">Free. Unsubscribe anytime.</p></div>
 <figure class="issue"><figcaption class="kick">This week's issue</figcaption><img src="issue.jpg" width="700" height="980" alt="The top of this week's Maine Ledger email: masthead, issue summary, and Maine Street photo" loading="lazy"></figure>
