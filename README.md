@@ -2,7 +2,7 @@
 
 Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.com (`CNAME`).
 
-**Publishing rule:** Ben explicitly approved making the Brunswick Edition live (Nov 5, 2026, 1:47 PM ET). That approval covered that release only; every future commit/push/deploy still needs Ben's explicit approval.
+**Publishing rule:** Ben explicitly approved making the Brunswick Edition live (Nov 5, 2026, 1:47 PM ET). That approval covered that release only (Ben separately approved the follow-up that removed the sample section); every future commit/push/deploy still needs Ben's explicit approval.
 
 ## Files
 - `index.html` — **live homepage**: the Brunswick Edition page (formerly the local concept `statewide-map.html`).
@@ -17,9 +17,10 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - Tagline (all widths) exactly: “Town business & good news from Brunswick.”
 - “Current edition” link directly below signup → Buttondown archive (newest first).
 - Map: accurate Maine outline plus the actual Brunswick town boundary (U.S. Census Bureau 2023 cartographic boundary files: state/county `500k`, county subdivision `cb_2023_23_cousub_500k`, “Brunswick town”, Cumberland County, GEOID 2300508430; public domain). Calm sage fill, restrained palette, enlargement inset. No other towns, no fake trees/compass/waves, no rings or animation.
-- Below the fold: blurred, scrollable newsletter frame clearly labeled “Sample only.” with placeholder text. No real or fabricated issue content or data.
+- Above the fold only: beta notice, masthead, signup, Current edition link, map, short footer. No sample newsletter section.
 
 ## Superseded (do not reinstate)
+- Blurred “Sample only.” newsletter frame below the fold → removed at Ben’s request (Nov 5, 2026, after launch).
 - Local-only / no-push rule for the Brunswick page → superseded by Ben's approval to go live (future pushes still need approval).
 - Coastal page as `index.html` → moved to `coastal-map.html`; Brunswick Edition is the homepage.
 - Portland and Bangor shown as disabled/grayed areas → removed at Ben's request; show Brunswick only.

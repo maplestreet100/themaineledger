@@ -80,39 +80,6 @@ button[type=submit]:hover{background:#3a362f}
 .current a:hover{color:#9e2a1b;border-color:#9e2a1b}
 .current .fine{margin-top:4px}
 
-/* —— Sample —— */
-.sample{border-top:3px double #151311;padding:26px 0 40px}
-.sample-head{text-align:center;max-width:620px;margin:0 auto 16px}
-.sample-head h2{font:700 26px/1.15 'Source Serif 4',Georgia,serif;margin:6px 0 4px}
-.sample-head p{margin:0;font-style:italic;color:#3a362f}
-.stamp{display:inline-block;border:2px solid #9e2a1b;color:#9e2a1b;font:700 13px 'Source Serif 4',Georgia,serif;text-transform:uppercase;letter-spacing:.2em;padding:3px 10px;background:#f6f2e8}
-.frame{position:relative;max-width:640px;margin:0 auto;background:#fffdf8;border:1px solid #151311}
-.progress{position:absolute;left:0;top:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:#151311;z-index:4}
-.scroller{height:min(600px,72vh);overflow-y:auto;position:relative;scroll-behavior:smooth}
-.sample-ribbon{position:sticky;top:0;z-index:3;display:flex;justify-content:center;padding:10px 0;background:linear-gradient(#fffdf8 70%,rgba(255,253,248,0))}
-.watermark{position:absolute;inset:0;pointer-events:none;z-index:2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Ctext x='150' y='110' text-anchor='middle' transform='rotate(-24 150 100)' font-family='Georgia,serif' font-size='24' font-weight='700' letter-spacing='4' fill='%239e2a1b' fill-opacity='.10'%3ESAMPLE ONLY%3C/text%3E%3C/svg%3E")}
-.issue{position:relative;padding:4px 28px 36px}
-.issue-mast{text-align:center;border-bottom:3px double #151311;padding:4px 0 10px;margin-bottom:12px}
-.issue-mast .t{font:400 34px/1.1 'Source Serif 4',Georgia,serif}
-.issue-mast .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5d584f}
-.blur{filter:blur(4.5px);user-select:none;-webkit-user-select:none}
-.sec{padding:14px 0 16px;border-bottom:1px solid #151311;opacity:.25;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
-.sec.in{opacity:1;transform:none}
-.sec h3{margin:0 0 8px;font:700 12px 'Source Serif 4',Georgia,serif;letter-spacing:.18em;text-transform:uppercase}
-.sec .hl{font:700 21px/1.2 'Source Serif 4',Georgia,serif;margin:0 0 6px}
-.sec p{margin:0 0 8px;font-size:15px}
-.bars{display:grid;gap:7px;margin-top:6px}
-.bars i{display:block;height:8px;background:#ddd6c6}
-.bars i:nth-child(2n){width:92%}.bars i:nth-child(3n){width:76%}.bars i:last-child{width:58%}
-.figs{display:grid;grid-template-columns:repeat(3,1fr);margin-top:10px;border-top:1px solid #151311;border-bottom:1px solid #151311}
-.figs div{padding:8px;text-align:center}.figs div+div{border-left:1px solid #151311}
-.figs b{display:block;font:700 22px 'Source Serif 4',Georgia,serif}
-.figs span{font-size:11px;text-transform:uppercase;letter-spacing:.1em}
-.sample-end{text-align:center;padding:22px 0 4px}
-.sample-end p{margin:10px 0 12px;font-style:italic}
-.sample-end a{font-weight:700;text-decoration:none;border-bottom:1.5px solid #151311}
-.fade-bot{position:absolute;left:0;right:0;bottom:0;height:40px;pointer-events:none;background:linear-gradient(rgba(255,253,248,0),#fffdf8);z-index:3}
-.disclaim{max-width:640px;margin:10px auto 0;font-size:13px;font-style:italic;color:#5d584f;text-align:center}
 footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-align:center;color:#3a362f}
 
 @media(min-width:880px){
@@ -129,8 +96,6 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
   .edition{font-size:11px;letter-spacing:.26em;gap:10px}
   .edition::before,.edition::after{width:28px}
   h1{font-size:28px}
-  .issue{padding:4px 18px 30px}
-  .issue-mast .t{font-size:28px}
   .pin-name{font-size:14px}}
 </style>
 </head>
@@ -219,84 +184,15 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
 </div>
 </main>
 
-<section class="sample" aria-labelledby="sample-title">
-  <div class="w">
-    <div class="sample-head">
-      <span class="stamp">Sample only.</span>
-      <h2 id="sample-title">A daily issue</h2>
-    </div>
-    <div class="frame">
-      <div class="progress" id="progress" aria-hidden="true"></div>
-      <div class="scroller" id="scroller" tabindex="0" aria-label="Sample newsletter layout, illustrative placeholder content only">
-        <div class="sample-ribbon"><span class="stamp">Sample only.</span></div>
-        <article class="issue">
-          <div class="watermark" aria-hidden="true"></div>
-          <div class="issue-mast">
-            <div class="t">The Maine Ledger</div>
-            <div class="k">Placeholder</div>
-          </div>
-          <section class="sec"><h3>Town Hall</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the Town Hall section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="figs blur" aria-hidden="true"><div><b>00</b><span>Figure</span></div><div><b>00</b><span>Figure</span></div><div><b>00</b><span>Figure</span></div></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <section class="sec"><h3>Business</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the Business section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <section class="sec"><h3>Wallet watch</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the Wallet watch section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="figs blur" aria-hidden="true"><div><b>00</b><span>Figure</span></div><div><b>00</b><span>Figure</span></div><div><b>00</b><span>Figure</span></div></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <section class="sec"><h3>Getting around</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the Getting around section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <section class="sec"><h3>Schools</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the Schools section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <section class="sec"><h3>Real estate corner</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the Real estate corner section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="figs blur" aria-hidden="true"><div><b>00</b><span>Figure</span></div><div><b>00</b><span>Figure</span></div><div><b>00</b><span>Figure</span></div></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <section class="sec"><h3>This week &amp; next</h3>
-            <div class="blur" aria-hidden="true"><p class="hl">Placeholder headline for the This week &amp; next section</p>
-            <p>Placeholder copy for layout only. Not news.</p></div>
-            <div class="bars blur" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            <p class="sr">Placeholder content, sample only.</p></section>
-          <div class="sample-end">
-            <a href="#signup" id="back-to-signup">Subscribe ↑</a>
-          </div>
-        </article>
-      </div>
-      <div class="fade-bot" aria-hidden="true"></div>
-    </div>
-    <p class="disclaim">Placeholder text. Not real news.</p>
-  </div>
-</section>
 <footer><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
 <script>
 (function(){
   var pin=document.getElementById('pin-brunswick'),email=document.getElementById('email'),tag=document.getElementById('src-tag');
   try{document.getElementById('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'America/New_York'})}catch(e){}
-  // Tagging mirrors index.html: zip-04011 by default; ?src=flyer keeps the flyer tag unless ?zip=04011 is present.
+  // Tagging mirrors the original site (coastal-map.html): zip-04011 by default; ?src=flyer keeps the flyer tag unless ?zip=04011 is present.
   var params=new URLSearchParams(location.search),src=(params.get('src')||'').toLowerCase(),zip=(params.get('zip')||'').replace(/\D/g,'');
   tag.value=(zip!=='04011'&&src==='flyer')?'flyer':'zip-04011';
   pin.addEventListener('click',function(){document.getElementById('signup').scrollIntoView({block:'center'});email.focus({preventScroll:true})});
-  // Sample frame: progress bar + section reveal
-  var sc=document.getElementById('scroller'),pr=document.getElementById('progress'),secs=sc.querySelectorAll('.sec');
-  sc.addEventListener('scroll',function(){var m=sc.scrollHeight-sc.clientHeight;pr.style.transform='scaleX('+(m>0?sc.scrollTop/m:0)+')';var lim=sc.getBoundingClientRect().bottom;secs.forEach(function(s){if(s.getBoundingClientRect().top<lim)s.classList.add('in')})},{passive:true});
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{root:sc,threshold:.15});
-    secs.forEach(function(s){io.observe(s)});
-  } else secs.forEach(function(s){s.classList.add('in')});
-  document.getElementById('back-to-signup').addEventListener('click',function(){setTimeout(function(){email.focus({preventScroll:true})},400)});
 })();
 </script>
 </body>
