@@ -10,7 +10,7 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - Regeneration sources live outside the repo in `/workspace/statewide-map-build/` (`gen.py` → `build.py` → `assemble.py` writes `index.html`; template `tpl.html`; tests `test.py`, screenshots `final.py`/`zoom.py`).
 
 ## Current decisions (index.html)
-- Beta notice: exactly one, at the top: “Still in beta — not ready for the public yet, but email signup still works.”
+- Beta notice: exactly one, at the top: “Still in beta — not ready for the public yet.”
 - Masthead: “The Maine Ledger” in Source Serif 4 (modern, classy, authoritative); “Brunswick Edition” as a small, centered, letterspaced edition line directly beneath the nameplate (hairlines either side); the date sits alone in the ruled date line.
 - Layout: newspaper rules, minimal words, no card UI. Mobile: signup before the map.
 - Signup: Brunswick only. Same Buttondown form and tag behavior as the coastal page (`zip-04011` default; `?src=flyer` → `flyer` unless `?zip=04011`). Never test-submit the real form.
@@ -29,6 +29,6 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - Red “blast radius” rings / pulsing animation, soft illustrative blob → replaced by the actual town boundary.
 - Separate desktop tagline (“Town hall, schools, housing and business. Free, daily.”) and mobile-only tagline → one tagline at all widths.
 - “Brunswick edition” inside the date line → moved under the nameplate.
-- Beta line without the signup clause → now ends “…, but email signup still works.”
+- Beta line ending “…, but email signup still works.” → clause removed at Ben’s request; notice is back to “Still in beta — not ready for the public yet.”
 - Blackletter nameplate, beta box beside masthead, second Notice box → removed.
 - Vintage illustration (pine trees, compass rose, wave hatching) → replaced by restrained cartography.
