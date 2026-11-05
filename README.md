@@ -15,12 +15,12 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - Layout: newspaper rules, minimal words, no card UI. Mobile: signup before the map.
 - Signup: Brunswick only. Same Buttondown form and tag behavior as the coastal page (`zip-04011` default; `?src=flyer` → `flyer` unless `?zip=04011`). Never test-submit the real form.
 - Tagline (all widths) exactly: “Town business & good news from Brunswick.”
-- “Current edition” section directly below signup with plain text “Read the current edition” (not a link; no href or click behavior).
+- “Current edition” section directly below signup with “Read the current edition” shown underlined but not a link (no href, no click behavior, no pointer cursor).
 - Map: accurate Maine outline plus the actual Brunswick town boundary (U.S. Census Bureau 2023 cartographic boundary files: state/county `500k`, county subdivision `cb_2023_23_cousub_500k`, “Brunswick town”, Cumberland County, GEOID 2300508430; public domain). Calm sage fill, restrained palette, enlargement inset. No other towns, no fake trees/compass/waves, no rings or animation.
 - Above the fold only: beta notice, masthead, signup, Current edition link, map, short footer. No sample newsletter section.
 
 ## Superseded (do not reinstate)
-- “Read the current edition →” as a link to the Buttondown archive → plain, non-clickable text at Ben’s request.
+- “Read the current edition →” as a link to the Buttondown archive → underlined, non-clickable text at Ben’s request.
 - Blurred “Sample only.” newsletter frame below the fold → removed at Ben’s request (Nov 5, 2026, after launch).
 - Local-only / no-push rule for the Brunswick page → superseded by Ben's approval to go live (future pushes still need approval).
 - Coastal page as `index.html` → moved to `coastal-map.html`; Brunswick Edition is the homepage.
