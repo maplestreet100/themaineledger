@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Maine Ledger · Your town's news, by zip code</title>
+<meta name="description" content="A free daily email newsletter for Midcoast Maine, organized by zip code. Brunswick 04011 is live; Harpswell, Freeport and Bath are coming soon.">
+<meta property="og:title" content="The Maine Ledger · Your town's news, by zip code">
+<meta property="og:description" content="A free daily email on town hall, schools, housing, business and the numbers — by zip code. Brunswick 04011 is live; more Midcoast towns coming.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://themaineledger.com/">
+<meta name="theme-color" content="#fbf7ef">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fbf7ef;color:#1f1c18;font:16px/1.55 'IBM Plex Sans',Helvetica,Arial,sans-serif}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}
+a{color:#a33a22}
+header{text-align:center;padding-top:28px;padding-bottom:18px;border-bottom:3px double #1f1c18}
+.kick{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7d7468;font-weight:600}
+.mast{font-family:Newsreader,Georgia,serif;font-weight:700;font-size:44px;line-height:1.1;margin:6px 0 2px;letter-spacing:-.5px}
+.mast .dot{color:#a33a22}
+.intro{text-align:center;padding:36px 0 8px;max-width:720px;margin:0 auto}
+h1{font-family:Newsreader,Georgia,serif;font-size:36px;line-height:1.12;margin:0 0 14px;font-weight:700}
+.lede{font-size:18px;color:#3a352e;margin:0}
+.pick{font-size:14px;color:#3a352e;margin:0 0 12px}
+.zips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;padding:0;list-style:none;justify-content:center}
+/* Static zip chips — not interactive */
+.zip{
+  border:1px solid #c9b99d;
+  background:#fff;
+  color:#1f1c18;
+  border-radius:999px;
+  padding:8px 14px;
+  font:600 13px 'IBM Plex Sans',Helvetica,Arial,sans-serif;
+  line-height:1.2;
+  cursor:default;
+  user-select:none;
+  pointer-events:none;
+}
+.zip .zip-code{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.zip .zip-status{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.75;margin-top:2px}
+.zip.is-live{
+  background:#1f1c18;
+  border-color:#1f1c18;
+  color:#fbf7ef;
+  box-shadow:0 1px 0 rgba(31,28,24,.15);
+}
+.zip.is-live .zip-status{color:#f4b8a8;opacity:.95}
+.zip.is-soon{
+  background:#f4ede0;
+  border-color:#d9ccb4;
+  color:#7d7468;
+  opacity:.92;
+}
+.zip.is-soon .zip-status{color:#9a9084;opacity:1}
+form{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:520px;margin:0 auto}
+input[type=email]{flex:1 1 220px;min-width:0;padding:14px;font:inherit;border:1px solid #c9b99d;background:#fff;color:#1f1c18;border-radius:2px}
+input:focus{outline:2px solid #a33a22;outline-offset:1px}
+button[type=submit]{padding:14px 22px;font:700 15px 'IBM Plex Sans',Helvetica,Arial,sans-serif;background:#1f1c18;color:#fbf7ef;border:0;border-radius:2px;cursor:pointer}
+button[type=submit]:hover{background:#a33a22}
+.note{font-size:13px;color:#7d7468;margin:10px 0 0;text-align:center}
+
+/* —— Map hero —— */
+.map-hero{padding:18px 0 8px}
+.map-wrap{margin:0 auto;text-align:center;max-width:720px}
+.map-wrap > .kick{margin-bottom:10px}
+.map-stage{
+  position:relative;
+  width:100%;
+  margin:0 auto;
+  border-radius:3px;
+  overflow:hidden;
+  background:#f4ede0;
+  border:1px solid #c9b99d;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.55) inset,
+    0 18px 48px rgba(31,28,24,.12),
+    0 4px 12px rgba(31,28,24,.06);
+}
+.map-stage::after{
+  content:"";
+  pointer-events:none;
+  position:absolute;inset:0;
+  box-shadow:inset 0 0 0 1px rgba(31,28,24,.06), inset 0 0 60px rgba(31,28,24,.04);
+  border-radius:3px;
+  z-index:6;
+}
+.map-img{
+  display:block;
+  width:100%;
+  height:auto;
+  vertical-align:middle;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+/*
+  Pin anatomy (top → bottom), left/top = geographic point:
+  [fixed-width label card]
+  [short stem]
+  [● marker]  ← center of marker sits on left%/top%
+*/
+.pin{
+  --pin-w: 112px;
+  --marker: 14px;
+  --stem: 8px;
+  position:absolute;
+  left:0;top:0;
+  width:var(--pin-w);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0;
+  padding:0;margin:0;border:0;background:transparent;
+  font:inherit;color:inherit;
+  cursor:default;
+  pointer-events:none;
+  user-select:none;
+  /* Anchor the MARKER CENTER on left/top */
+  transform:translate(-50%, calc(-100% + (var(--marker) / 2)));
+  z-index:2;
+  filter:drop-shadow(0 2px 4px rgba(31,28,24,.16));
+}
+.pin.is-live{z-index:5}
+
+.pin-card{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  padding:7px 8px 6px;
+  background:rgba(251,247,239,.96);
+  border:1px solid #c9b99d;
+  border-radius:4px;
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset;
+  text-align:center;
+  line-height:1.15;
+}
+.pin.is-live .pin-card{
+  border-color:#a33a22;
+  background:#fbf7ef;
+  box-shadow:0 0 0 1px rgba(163,58,34,.18), 0 1px 0 rgba(255,255,255,.6) inset;
+}
+.pin-name{
+  display:block;
+  width:100%;
+  font-family:Newsreader,Georgia,serif;
+  font-weight:700;
+  font-size:14px;
+  color:#1f1c18;
+  letter-spacing:-.01em;
+  white-space:nowrap;
+}
+.pin-meta{
+  display:block;
+  width:100%;
+  font-size:11px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  color:#5c554c;
+  letter-spacing:.04em;
+}
+.pin-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:2px;
+  min-height:16px;
+  padding:1px 7px;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#7d7468;
+  background:#efe6d6;
+  border:1px solid #d9ccb4;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.pin.is-live .pin-status{
+  color:#fbf7ef;
+  background:#a33a22;
+  border-color:#a33a22;
+  letter-spacing:.12em;
+}
+.pin.is-live{
+  --pin-w: 124px;
+  --marker: 18px;
+  --stem: 10px;
+}
+.pin.is-live .pin-name{font-size:15px}
+.pin.is-live .pin-card{
+  padding:8px 10px 7px;
+  border-color:#b45742;
+}
+.pin.is-soon{opacity:.9}
+
+/* Stem: thin line from card bottom to marker */
+.pin-stem{
+  display:block;
+  width:2px;
+  height:var(--stem);
+  margin:0;
+  background:#1f1c18;
+  opacity:.5;
+  flex:0 0 auto;
+}
+.pin.is-live .pin-stem{background:#a33a22;opacity:.75}
+
+/* Marker dot — the true geographic anchor */
+.pin-dot{
+  display:block;
+  width:var(--marker);
+  height:var(--marker);
+  border-radius:50%;
+  background:#efe6d6;
+  border:2px solid #1f1c18;
+  box-shadow:0 0 0 3px rgba(251,247,239,.85);
+  flex:0 0 auto;
+  position:relative;
+}
+.pin-dot::after{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:50%;
+  background:#5c554c;
+}
+.pin.is-live .pin-dot{
+  background:#a33a22;
+  border-color:#1f1c18;
+  box-shadow:0 0 0 3px rgba(163,58,34,.25), 0 0 0 6px rgba(251,247,239,.8);
+}
+.pin.is-live .pin-dot::after{
+  inset:4px;
+  background:#fbf7ef;
+}
+
+/* Geography — four towns, balanced */
+.pin-freeport{left:19%;top:47%}   /* SW of Brunswick */
+.pin-brunswick{left:37%;top:39%}  /* central near Merrymeeting Bay */
+.pin-bath{left:67%;top:29%}       /* NE across the bay */
+.pin-harpswell{left:54%;top:73%}  /* south peninsula */
+
+.signup{padding:28px 0 36px;text-align:center}
+.signup .pick{text-align:center}
+
+.inside{background:#f4ede0;border-top:1px solid #d9ccb4;border-bottom:1px solid #d9ccb4;padding:26px 0}
+.inside ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 22px;font-family:Newsreader,Georgia,serif;font-size:19px;justify-content:center}
+.inside li:before{content:'§ ';color:#a33a22}
+.towns{padding:28px 0 8px}
+.towns-grid{display:grid;gap:12px;margin-top:12px}
+.town-card{border:1px solid #d9ccb4;background:#fff;padding:14px 16px;border-radius:2px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.town-card.is-soon{background:#f8f3ea;border-color:#e0d4bc;color:#5c554c}
+.town-card.is-soon strong{color:#5c554c}
+.town-card strong{font-family:Newsreader,Georgia,serif;font-size:18px;font-weight:700}
+.town-card .zip-num{font-variant-numeric:tabular-nums;color:#7d7468;font-size:14px;font-weight:600}
+.badge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 8px;border-radius:999px}
+.badge-live{background:#a33a22;color:#fbf7ef}
+.badge-soon{background:#efe6d6;color:#7d7468;border:1px solid #d9ccb4}
+footer{padding-top:26px;padding-bottom:40px;font-size:13px;color:#7d7468;text-align:center}
+.sr{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+@media(max-width:799px){
+  .mast{font-size:36px}
+  .mast .dot{display:none}
+  .mast .edition{display:block;font-size:15px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#a33a22;margin-top:6px}
+  h1{font-size:28px}
+  .lede{font-size:16px}
+  .intro{padding:24px 0 4px}
+  .map-wrap{max-width:100%}
+  .pin{
+    --pin-w: 92px;
+    --marker: 12px;
+    --stem: 6px;
+  }
+  .pin.is-live{
+    --pin-w: 102px;
+    --marker: 15px;
+    --stem: 7px;
+  }
+  .pin-card{padding:5px 6px 5px;gap:1px}
+  .pin.is-live .pin-card{padding:6px 7px 5px}
+  .pin-name{font-size:12px}
+  .pin.is-live .pin-name{font-size:13px}
+  .pin-meta{font-size:10px}
+  .pin-status{font-size:8px;letter-spacing:.08em;min-height:14px;padding:0 5px}
+  .pin-freeport{left:17%;top:46%}
+  .pin-brunswick{left:35%;top:38%}
+  .pin-bath{left:69%;top:28%}
+  .pin-harpswell{left:55%;top:72%}
+}
+@media(min-width:800px){
+  .mast{font-size:56px}
+  h1{font-size:46px}
+  .intro{padding:48px 0 12px}
+  .map-wrap{max-width:680px}
+  .towns-grid{grid-template-columns:1fr 1fr}
+}
+@media(min-width:1100px){
+  .map-wrap{max-width:740px}
+}
+
+/* Beta banner */
+.beta-banner{
+  width:100%;
+  margin:0;
+  padding:7px 16px;
+  background:#efe6d6;
+  color:#7a3a2a;
+  border-bottom:1px solid #d9ccb4;
+  text-align:center;
+  font:600 11px/1.3 'IBM Plex Sans',Helvetica,Arial,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+<div class="beta-banner" role="status">Beta testing — not public yet.</div>
+<header class="w">
+  <div class="kick">The Daily Email Newsletter</div>
+  <div class="mast">The Maine Ledger <span class="dot">·</span> <span class="edition">By Zip Code</span></div>
+  <div class="kick">Midcoast Maine</div>
+</header>
+<main>
+<section class="w intro">
+  <h1>Your town's news, by zip code.</h1>
+  <p class="lede">A free daily email on town hall, schools, housing, business and the numbers. Brunswick (<span class="zip-num">04011</span>) is live; Harpswell, Freeport and Bath are coming soon.</p>
+</section>
+
+<section class="w map-hero" aria-label="Midcoast Maine map">
+  <figure class="map-wrap">
+    <figcaption class="kick">Midcoast · by zip</figcaption>
+    <div class="map-stage">
+      <img class="map-img" src="map.jpg" width="1728" height="2304" alt="Hand-drawn vintage map of Midcoast Maine showing Casco Bay, Merrymeeting Bay, and the surrounding coastline." decoding="async" fetchpriority="high">
+
+      <!-- Coming-soon pins are inert labels (divs), not buttons -->
+      <div class="pin pin-freeport is-soon" aria-label="Freeport 04032, coming soon">
+        <span class="pin-card">
+          <span class="pin-name">Freeport</span>
+          <span class="pin-meta">04032</span>
+          <span class="pin-status">Coming soon</span>
+        </span>
+        <span class="pin-stem" aria-hidden="true"></span>
+        <span class="pin-dot" aria-hidden="true"></span>
+      </div>
+
+      <div class="pin pin-brunswick is-live" aria-label="Brunswick 04011, live now">
+        <span class="pin-card">
+          <span class="pin-name">Brunswick</span>
+          <span class="pin-meta">04011</span>
+          <span class="pin-status">Live now</span>
+        </span>
+        <span class="pin-stem" aria-hidden="true"></span>
+        <span class="pin-dot" aria-hidden="true"></span>
+      </div>
+
+      <div class="pin pin-bath is-soon" aria-label="Bath 04530, coming soon">
+        <span class="pin-card">
+          <span class="pin-name">Bath</span>
+          <span class="pin-meta">04530</span>
+          <span class="pin-status">Coming soon</span>
+        </span>
+        <span class="pin-stem" aria-hidden="true"></span>
+        <span class="pin-dot" aria-hidden="true"></span>
+      </div>
+
+      <div class="pin pin-harpswell is-soon" aria-label="Harpswell 04079, coming soon">
+        <span class="pin-card">
+          <span class="pin-name">Harpswell</span>
+          <span class="pin-meta">04079</span>
+          <span class="pin-status">Coming soon</span>
+        </span>
+        <span class="pin-stem" aria-hidden="true"></span>
+        <span class="pin-dot" aria-hidden="true"></span>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<section class="w signup">
+  <p class="pick" id="zip-help">Brunswick is live. Subscribe for the free daily email.</p>
+  <div class="zips" aria-labelledby="zip-help">
+    <div class="zip is-live" aria-current="true">
+      <span class="zip-code">04011 · Brunswick</span>
+      <span class="zip-status">Live now</span>
+    </div>
+    <div class="zip is-soon">
+      <span class="zip-code">04079 · Harpswell</span>
+      <span class="zip-status">Coming soon</span>
+    </div>
+    <div class="zip is-soon">
+      <span class="zip-code">04032 · Freeport</span>
+      <span class="zip-status">Coming soon</span>
+    </div>
+    <div class="zip is-soon">
+      <span class="zip-code">04530 · Bath</span>
+      <span class="zip-status">Coming soon</span>
+    </div>
+  </div>
+  <form id="f" action="https://buttondown.com/api/emails/embed-subscribe/MaineLedger" method="post" target="popupwindow" onsubmit="window.open('https://buttondown.com/MaineLedger', 'popupwindow')">
+    <label class="sr" for="email">Email address</label>
+    <input type="email" name="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+    <input type="hidden" value="1" name="embed">
+    <input type="hidden" name="tag" id="src-tag" value="zip-04011">
+    <button type="submit">Subscribe</button>
+  </form>
+  <script>
+(function(){
+  // Brunswick-only signup. Tag with zip-04011 by default.
+  // ?src=flyer keeps the flyer tag until/unless ?zip=04011 is also present.
+  // Other ?zip= values are ignored (only 04011 is live).
+  var tagEl = document.getElementById('src-tag');
+  var params = new URLSearchParams(location.search);
+  var src = (params.get('src') || '').toLowerCase();
+  var zipParam = (params.get('zip') || '').replace(/\D/g,'');
+  if (zipParam === '04011') {
+    tagEl.value = 'zip-04011';
+  } else if (src === 'flyer') {
+    tagEl.value = 'flyer';
+  } else {
+    tagEl.value = 'zip-04011';
+  }
+})();
+  </script>
+  <noscript><p class="note">Or sign up directly at <a href="https://buttondown.com/MaineLedger">buttondown.com/MaineLedger</a>.</p></noscript>
+  <p class="note">Free. Unsubscribe anytime.</p>
+</section>
+
+<section class="w towns">
+  <div class="kick">Towns on the map</div>
+  <div class="towns-grid">
+    <div class="town-card"><div><strong>Brunswick</strong> <span class="zip-num">04011</span></div><span class="badge badge-live">Live now</span></div>
+    <div class="town-card is-soon"><div><strong>Harpswell</strong> <span class="zip-num">04079</span></div><span class="badge badge-soon">Coming soon</span></div>
+    <div class="town-card is-soon"><div><strong>Freeport</strong> <span class="zip-num">04032</span></div><span class="badge badge-soon">Coming soon</span></div>
+    <div class="town-card is-soon"><div><strong>Bath</strong> <span class="zip-num">04530</span></div><span class="badge badge-soon">Coming soon</span></div>
+  </div>
+</section>
+
+<section class="inside">
+  <div class="w">
+    <div class="kick">What's inside</div>
+    <ul>
+      <li>Town Hall</li>
+      <li>Business</li>
+      <li>Wallet watch</li>
+      <li>Getting around</li>
+      <li>Schools</li>
+      <li>Real estate corner</li>
+      <li>This week &amp; next</li>
+    </ul>
+  </div>
+</section>
+</main>
+<footer class="w">© 2026 The Maine Ledger · Midcoast Maine · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></footer>
+</body>
+</html>
