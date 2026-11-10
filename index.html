@@ -91,12 +91,24 @@ button[type=submit]:hover{background:#3a362f}
 .swatch{display:inline-block;width:10px;height:10px;flex:0 0 auto;border:1px solid #c9c2b6;position:relative;top:1px}
 .swatch-harpswell{background:#e0d2c6}.towns label:has(input[value="Harpswell"]:checked) .swatch-harpswell{background:#cbb6a6}.town-harpswell.is-on path,.inset-town.town-harpswell.is-on{fill:#cbb6a6}.swatch-topsham{background:#d3d4bc}.towns label:has(input[value="Topsham"]:checked) .swatch-topsham{background:#b8ba9a}.town-topsham.is-on path,.inset-town.town-topsham.is-on{fill:#b8ba9a}.swatch-freeport{background:#c8d6d9}.towns label:has(input[value="Freeport"]:checked) .swatch-freeport{background:#adc4c9}.town-freeport.is-on path,.inset-town.town-freeport.is-on{fill:#adc4c9}.swatch-bath{background:#d0ced6}.towns label:has(input[value="Bath"]:checked) .swatch-bath{background:#b3b0bb}.town-bath.is-on path,.inset-town.town-bath.is-on{fill:#b3b0bb}.swatch-brunswick{background:#c6d4c9}.towns label:has(input[value="Brunswick"]:checked) .swatch-brunswick{background:#a8beb0}.town-brunswick.is-on path,.inset-town.town-brunswick.is-on{fill:#a8beb0}
 
+.site-nav{border-bottom:1px solid #151311}
+.site-nav ul{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 18px;list-style:none;margin:0;padding:10px 0}
+.site-nav a{color:#3a362f;text-decoration:none;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.site-nav a:hover,.site-nav a:focus-visible{color:#151311}
+.site-nav a[aria-current="page"]{color:#151311;box-shadow:inset 0 -1px 0 #151311}
+.site-foot{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-align:center;color:#3a362f}
+.site-foot a{color:#151311}
+.below{display:grid;gap:26px;padding:12px 0 42px;border-top:1px solid #151311}
+.below > *{min-width:0}
+
 footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-align:center;color:#3a362f}
 
 @media(min-width:880px){
   .front{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0}
   .front > .map-col{padding-right:26px}
   .map-stage .pin-name{font-size:9px;letter-spacing:.015em}
+  .below{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0}
+  .below > .below-about{padding-right:26px}
 }
 @media(max-width:879px){
   .front > .sub-col{order:-1}
@@ -124,6 +136,17 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
   <div class="edition" id="edition">Midcoast Editions</div>
   <div class="dateline"><span class="dl-date" id="today"></span></div>
 </header>
+<nav class="site-nav" aria-label="Site">
+  <div class="w">
+    <ul>
+      <li><a href="/" aria-current="page">Subscribe</a></li>
+      <li><a href="https://archives.themaineledger.com/archive/">Archive</a></li>
+      <li><a href="/trackers/">Trackers</a></li>
+      <li><a href="/advertise/">Advertise</a></li>
+      <li><a href="/about/">About</a></li>
+    </ul>
+  </div>
+</nav>
 <main class="w">
 <div class="front">
   <section class="map-col" aria-label="Map">
@@ -266,9 +289,22 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
     <noscript><p class="fine">Or sign up directly at <a href="https://buttondown.com/MaineLedger">buttondown.com/MaineLedger</a>.</p></noscript>
   </section>
 </div>
+
+  <section class="below" aria-label="About and past issues">
+    <div class="below-about">
+      <div class="kicker">About</div>
+      <h2 class="sub-h">Local news, five towns.</h2>
+      <p>The Maine Ledger is a free weekly email for Brunswick, Topsham, Harpswell, Bath and Freeport. Each town has its own morning. We write what happened, and what it means for you. <a href="/about/">About the Ledger</a></p>
+    </div>
+    <div class="below-past col-rule">
+      <div class="kicker">Past issues</div>
+      <p>Earlier editions are collected in the archive.</p>
+      <p><a href="https://archives.themaineledger.com/archive/">Browse past issues</a></p>
+    </div>
+  </section>
 </main>
 
-<footer><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
+<footer class="site-foot"><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
 <script>
 function beforeSubmit(){
   var boxes=document.querySelectorAll('input[name="tag"][type="checkbox"]');

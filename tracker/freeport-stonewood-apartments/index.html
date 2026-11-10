@@ -223,16 +223,37 @@ footer .mock { margin: 0 auto; font-family: var(--sans); font-size: 12.5px; line
   }
   .lead, .status, .art, .facts, .timeline, .players, .missing, .sources { order: 0; }
 }
+
+.site-nav{border-bottom:1px solid #151311;background:var(--canvas,#f3efe6)}
+.site-nav .w{max-width:1080px;margin:0 auto;padding:0 22px}
+.site-nav ul{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 18px;list-style:none;margin:0;padding:10px 0}
+.site-nav a{color:#3a362f;text-decoration:none;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.site-nav a:hover,.site-nav a:focus-visible{color:#151311}
+.site-nav a[aria-current="page"]{color:#151311;box-shadow:inset 0 -1px 0 #151311}
+footer.site-foot{margin-top:8px;padding:14px 0 36px;text-align:center;border-top:1px solid #151311;font-size:13px;color:#3a362f;font-family:'Source Serif 4',Georgia,'Times New Roman',serif}
+footer.site-foot a{color:#151311}
+footer.site-foot .w{max-width:1080px;margin:0 auto;padding:0 22px}
 </style>
 </head>
 <body>
 <header>
   <div class="mast">
-    <a class="nameplate" href="https://themaineledger.com"><p class="nameplate">The Maine Ledger</p></a>
+    <a class="nameplate" href="/"><p class="nameplate">The Maine Ledger</p></a>
     <p class="edition">Midcoast Editions</p>
     <div class="dateline"><span>Freeport · Project tracker</span></div>
   </div>
 </header>
+<nav class="site-nav" aria-label="Site">
+  <div class="w">
+    <ul>
+      <li><a href="/">Subscribe</a></li>
+      <li><a href="https://archives.themaineledger.com/archive/">Archive</a></li>
+      <li><a href="/trackers/" aria-current="page">Trackers</a></li>
+      <li><a href="/advertise/">Advertise</a></li>
+      <li><a href="/about/">About</a></li>
+    </ul>
+  </div>
+</nav>
 <main class="wrap">
   <div class="cols">
     <div class="main">
@@ -352,11 +373,10 @@ footer .mock { margin: 0 auto; font-family: var(--sans); font-size: 12.5px; line
     </div>
   </div>
 </main>
-<footer>
-  <div class="wrap">
-    <p class="name">The Maine Ledger</p>
-    <p class="tag">Freeport edition · Wednesdays</p>
-    <p class="disc">Built from public sources like town records, NOAA and local news. Spot a mistake? Reply and let us know.</p>
+<footer class="site-foot">
+  <div class="w">
+    <p class="disc" style="margin:0 auto 12px;max-width:420px;font-size:14px;line-height:1.55;color:#7d7468">Built from public sources like town records, NOAA and local news. Spot a mistake? Write <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a>.</p>
+    <div>© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div>
   </div>
 </footer>
 </body>

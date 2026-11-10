@@ -46,6 +46,14 @@ main{flex:1}
 .home a{font-size:15px;color:#5d584f;text-decoration:none;border-bottom:1px solid #c9c2b6}
 .home a:hover{color:#151311;border-color:#151311}
 
+.site-nav{border-bottom:1px solid #151311}
+.site-nav ul{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 18px;list-style:none;margin:0;padding:10px 0}
+.site-nav a{color:#3a362f;text-decoration:none;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.site-nav a:hover,.site-nav a:focus-visible{color:#151311}
+.site-nav a[aria-current="page"]{color:#151311;box-shadow:inset 0 -1px 0 #151311}
+.site-foot{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-align:center;color:#3a362f}
+.site-foot a{color:#151311}
+
 footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-align:center;color:#3a362f}
 
 @media(max-width:700px){
@@ -67,6 +75,17 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
   <div class="edition" id="edition">Midcoast Editions</div>
   <div class="dateline"><span class="dl-date" id="today"></span></div>
 </header>
+<nav class="site-nav" aria-label="Site">
+  <div class="w">
+    <ul>
+      <li><a href="/" aria-current="page">Subscribe</a></li>
+      <li><a href="https://archives.themaineledger.com/archive/">Archive</a></li>
+      <li><a href="/trackers/">Trackers</a></li>
+      <li><a href="/advertise/">Advertise</a></li>
+      <li><a href="/about/">About</a></li>
+    </ul>
+  </div>
+</nav>
 <main class="w">
   <section class="thanks">
     <h2 class="sub-h">You're subscribed.</h2>
@@ -82,7 +101,7 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
     <p class="home"><a href="/">Back home</a></p>
   </section>
 </main>
-<footer><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
+<footer class="site-foot"><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
 <script>
 (function(){
   try{document.getElementById('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'America/New_York'})}catch(e){}

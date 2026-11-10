@@ -1,0 +1,67 @@
+/* Shared chrome for The Maine Ledger multi-page site. */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{height:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:#f6f2e8;color:#151311;font:17px/1.5 'Source Serif 4',Georgia,'Times New Roman',serif}
+a{color:#151311}
+.w{max-width:1080px;margin:0 auto;padding:0 22px}
+
+.notice-strip{border-bottom:1px solid #151311;padding:8px 16px;text-align:center;font-size:14px;line-height:1.4;letter-spacing:.03em;text-wrap:balance}
+.notice-strip b{color:#9e2a1b;text-transform:uppercase;letter-spacing:.12em;font-size:13px}
+
+.masthead{padding-top:18px;text-align:center}
+.mast-row{text-align:center}
+.nameplate{font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:68px;line-height:1;margin:0;letter-spacing:-.015em;white-space:nowrap;font-optical-sizing:auto}
+.nameplate a{color:inherit;text-decoration:none}
+.nameplate a:hover{color:#151311}
+.dateline{margin-top:12px;border-top:3px double #151311;border-bottom:1px solid #151311;display:flex;justify-content:center;gap:12px;padding:5px 2px;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+.edition{display:flex;align-items:center;justify-content:center;gap:14px;margin:8px 0 0;font:600 13px/1.2 'Source Serif 4',Georgia,serif;text-transform:uppercase;letter-spacing:.32em;color:#3a362f;padding-left:.32em}
+.edition::before,.edition::after{content:"";width:44px;height:1px;background:#151311;opacity:.6}
+
+.site-nav{border-bottom:1px solid #151311}
+.site-nav ul{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 18px;list-style:none;margin:0;padding:10px 0}
+.site-nav a{color:#3a362f;text-decoration:none;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.site-nav a:hover,.site-nav a:focus-visible{color:#151311}
+.site-nav a[aria-current="page"]{color:#151311;box-shadow:inset 0 -1px 0 #151311}
+.site-foot{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-align:center;color:#3a362f}
+.site-foot a{color:#151311}
+
+main{flex:1}
+.page{padding:36px 0 72px;max-width:36em}
+.page .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;border-bottom:1px solid #151311;padding-bottom:4px;margin:0 0 10px}
+.page h1{font:700 34px/1.08 'Source Serif 4',Georgia,serif;margin:0 0 14px;letter-spacing:-.01em}
+.page h2{font:600 22px/1.2 'Source Serif 4',Georgia,serif;margin:28px 0 10px;letter-spacing:-.01em}
+.page p{margin:0 0 14px}
+.page p:last-child{margin-bottom:0}
+.lede{font-style:italic;font-size:18px;color:#3a362f;margin:0 0 18px}
+.days{list-style:none;margin:0 0 22px;padding:0;max-width:18em}
+.days li{display:flex;justify-content:space-between;gap:1.25em;padding:5px 0;border-bottom:1px solid #e4ddd0}
+.days li:first-child{border-top:1px solid #e4ddd0}
+.days .when{font-style:italic;color:#5d584f}
+.todo{margin:14px 0;padding:12px 14px;background:#efebe3;color:#3a362f;font-style:italic;border-left:2px solid #151311}
+.todo-inline{display:inline;padding:1px 6px;margin:0;border-left:0;font-style:italic;background:#efebe3;color:#3a362f}
+.note{font-size:15px;color:#5d584f;margin:0 0 18px;line-height:1.45}
+.fine{font-size:13px;color:#7a746a;margin:10px 0 0;font-style:italic}
+
+.track-list{display:grid;gap:18px;margin:22px 0 0;padding:0;list-style:none;max-width:36em}
+.track-card{display:block;padding:18px 0 20px;border-top:1px solid #151311;border-bottom:1px solid #151311;color:inherit;text-decoration:none}
+.track-card:hover h2{text-decoration:underline;text-underline-offset:3px}
+.track-card .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:600;border:0;padding:0;margin:0 0 8px;color:#3a362f}
+.track-card h2{font:600 24px/1.2 'Source Serif 4',Georgia,serif;margin:0 0 10px;letter-spacing:-.01em}
+.track-card p{margin:0 0 8px;color:#3a362f}
+.track-card .fine{margin:8px 0 0}
+
+.sponsor-ex{margin:8px 0 28px;padding:22px 16px 28px;background:#fbf9f4;border:1px solid #e4ddd0;text-align:center}
+.sponsor-ex-label{margin:0 0 18px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:#7a746a}
+.sponsor-mark{width:60px;height:60px;margin:0 auto 14px;border-radius:50%;background:#e8e0d2;border:1px solid #d9cfbf}
+.sponsor-line{margin:0 0 5px;font-family:Georgia,'Times New Roman',Times,serif;font-style:italic;font-size:14px;line-height:1.55;color:#7d7468}
+.sponsor-name{color:#5a5248;text-decoration:none;border-bottom:1px solid #d9cfbf;font-style:italic}
+
+@media(max-width:700px){
+  .nameplate{font-size:10.6vw}
+  .dateline{font-size:11px;letter-spacing:.06em}
+  .edition{font-size:11px;letter-spacing:.26em;gap:10px}
+  .edition::before,.edition::after{width:28px}
+  .page h1{font-size:28px}
+  .page{padding:28px 0 56px}
+}

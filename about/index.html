@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About · The Maine Ledger</title>
+<meta name="description" content="What The Maine Ledger is, how stories are sourced, and how to reach us with a correction.">
+<meta property="og:title" content="About · The Maine Ledger">
+<meta property="og:description" content="What The Maine Ledger is, how stories are sourced, and how to reach us with a correction.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://themaineledger.com/about/">
+<link rel="canonical" href="https://themaineledger.com/about/">
+<meta name="theme-color" content="#f6f2e8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<div class="notice-strip" role="status"><b>Still in beta</b>, not ready for the public yet.</div>
+<header class="w masthead">
+  <div class="mast-row">
+    <p class="nameplate"><a href="/">The Maine Ledger</a></p>
+  </div>
+  <div class="edition">Midcoast Editions</div>
+  <div class="dateline"><span class="dl-date" id="today"></span></div>
+</header>
+<nav class="site-nav" aria-label="Site">
+  <div class="w">
+    <ul>
+      <li><a href="/">Subscribe</a></li>
+      <li><a href="https://archives.themaineledger.com/archive/">Archive</a></li>
+      <li><a href="/trackers/">Trackers</a></li>
+      <li><a href="/advertise/">Advertise</a></li>
+      <li><a href="/about/" aria-current="page">About</a></li>
+    </ul>
+  </div>
+</nav>
+<main class="w">
+  <article class="page">
+    <p class="kicker">About</p>
+    <h1>What The Maine Ledger is</h1>
+    <p class="lede">Local, neutral news for Brunswick, Topsham, Harpswell, Bath and Freeport, written so you can see what it means for you.</p>
+    <p>The Maine Ledger is a free weekly email. Each town has its own morning: Harpswell on Monday, Topsham on Tuesday, Freeport on Wednesday, Bath on Thursday and Brunswick on Friday.</p>
+    <h2>How stories are sourced</h2>
+    <p>We work from public records, town meetings and local sources. When we rely on a source, we say so.</p>
+    <h2>Corrections</h2>
+    <p>If something is wrong, write <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a>. We will look into it.</p>
+    <h2>The editor</h2>
+    <p class="todo">[Ben to write: about the editor]</p>
+  </article>
+</main>
+<footer class="site-foot"><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
+<script>
+(function(){
+  try{document.getElementById('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'America/New_York'})}catch(e){}
+})();
+</script>
+</body>
+</html>
