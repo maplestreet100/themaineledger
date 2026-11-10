@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Maine Ledger · Brunswick · Tue., Nov. 10</title>
+<meta name="description" content="The Brunswick edition sent November 10, 2026.">
+<meta property="og:title" content="The Maine Ledger · Brunswick · Tue., Nov. 10">
+<meta property="og:description" content="The Brunswick edition sent November 10, 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://themaineledger.com/archive/brunswick/2026-11-10/">
+<link rel="canonical" href="https://themaineledger.com/archive/brunswick/2026-11-10/">
+<meta name="theme-color" content="#f6f2e8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+<div class="notice-strip" role="status"><b>Still in beta</b>, not ready for the public yet.</div>
+<header class="w masthead">
+  <div class="mast-row">
+    <p class="nameplate"><a href="/">The Maine Ledger</a></p>
+  </div>
+  <div class="edition">Midcoast Editions</div>
+  <div class="dateline"><span class="dl-date" id="today"></span></div>
+</header>
+<nav class="site-nav" aria-label="Site">
+  <div class="w">
+    <ul>
+      <li><a href="/">Subscribe</a></li>
+      <li><a href="/archive/" aria-current="page">Archive</a></li>
+      <li><a href="/trackers/">Trackers</a></li>
+      <li><a href="/advertise/">Advertise</a></li>
+      <li><a href="/about/">About</a></li>
+    </ul>
+  </div>
+</nav>
+<main class="w issue-shell">
+  <p class="back"><a href="/archive/">Back to the archive</a></p>
+  <h1 class="sr">The Maine Ledger · Brunswick · Tue., Nov. 10</h1>
+  <iframe class="issue-frame" id="issue-frame" src="body.html" title="The Maine Ledger · Brunswick · Tue., Nov. 10" scrolling="no"></iframe>
+</main>
+<script>
+(function(){
+  var frame = document.getElementById('issue-frame');
+  if (!frame) return;
+  function fit(){
+    try{
+      var doc = frame.contentDocument;
+      if (!doc) return;
+      var h = Math.max(
+        doc.documentElement ? doc.documentElement.scrollHeight : 0,
+        doc.body ? doc.body.scrollHeight : 0
+      );
+      if (h) frame.style.height = h + 'px';
+    }catch (e){}
+  }
+  function bind(){
+    fit();
+    try{
+      var doc = frame.contentDocument;
+      if (!doc) return;
+      var imgs = doc.getElementsByTagName('img');
+      for (var i = 0; i < imgs.length; i++) imgs[i].addEventListener('load', fit);
+    }catch (e){}
+    setTimeout(fit, 200);
+    setTimeout(fit, 800);
+    setTimeout(fit, 2000);
+  }
+  frame.addEventListener('load', bind);
+  try{
+    if (frame.contentDocument && frame.contentDocument.readyState === 'complete') bind();
+  }catch (e){}
+  window.addEventListener('resize', fit);
+})();
+</script>
+<footer class="site-foot"><div class="w">© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div></footer>
+<script>
+(function(){
+  try{document.getElementById('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'America/New_York'})}catch(e){}
+})();
+</script>
+</body>
+</html>

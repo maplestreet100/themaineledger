@@ -65,3 +65,20 @@ main{flex:1}
   .page h1{font-size:28px}
   .page{padding:28px 0 56px}
 }
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.archive-list{list-style:none;margin:0;padding:0}
+.archive-list li{padding:10px 0;border-bottom:1px solid #e4ddd0}
+.archive-list li:first-child{border-top:1px solid #e4ddd0}
+.archive-list a{color:#151311;text-decoration:none}
+.archive-list a:hover{text-decoration:underline;text-underline-offset:3px}
+.archive-list time{display:block;margin-top:3px;font-size:13px;color:#7a746a;font-style:italic}
+.archive-empty{color:#5d584f;font-style:italic;margin:0}
+
+.back{margin:0 0 16px;font-size:15px}
+.back a{color:#5d584f;text-decoration:none;border-bottom:1px solid #c9c2b6}
+.back a:hover{color:#151311;border-color:#151311}
+
+.issue-shell{padding-top:22px;padding-bottom:40px;width:100%}
+.issue-frame{display:block;width:100%;border:0;overflow:hidden;background:#f3efe6;min-height:240px}
