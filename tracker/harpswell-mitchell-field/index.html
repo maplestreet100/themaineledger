@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<meta name="format-detection" content="telephone=no,address=no,email=no,date=no">
+<title>Mitchell Field's future · The Maine Ledger</title>
+<meta name="description" content="A running tracker for Harpswell's plan to hold public workshops on the future of George J. Mitchell Field, including two remaining Navy-era buildings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+:root {
+  --canvas: #f3efe6;
+  --panel: #faf7ef;
+  --ink: #1f1c18;
+  --brick: #a33a22;
+  --mute: #7d7468;
+  --soft: #a89c8a;
+  --sage: #c5d4bf;
+  --kicker: #55754f;
+  --site-ink: #151311;
+  --site-mute: #3a362f;
+  --serif: Baskerville, "Libre Baskerville", "Baskerville Old Face", Georgia, "Times New Roman", Times, serif;
+  --display: "Source Serif 4", Georgia, "Times New Roman", Times, serif;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--canvas); color: var(--ink); color-scheme: light only; }
+body { font-family: var(--serif); font-size: 18px; line-height: 1.6; }
+a { color: var(--brick); }
+a:focus-visible { outline: 2px solid var(--brick); outline-offset: 3px; }
+.mast {
+  text-align: center;
+  padding: 22px 20px 0;
+  background: var(--canvas);
+}
+.mast a.nameplate {
+  display: inline-block;
+  color: var(--site-ink);
+  text-decoration: none;
+}
+.mast a.nameplate:hover { color: var(--brick); }
+.nameplate {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(32px, 10.6vw, 68px);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+.edition {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin: 10px 0 0;
+  font-family: var(--display);
+  font-weight: 600; font-size: 13px; line-height: 1.2;
+  text-transform: uppercase; letter-spacing: 0.32em;
+  color: var(--site-mute);
+  padding-left: 0.32em;
+}
+.edition::before, .edition::after {
+  content: ""; width: 44px; height: 1px; background: var(--site-ink); opacity: 0.6;
+}
+.dateline {
+  margin-top: 12px;
+  border-top: 3px double var(--site-ink);
+  border-bottom: 1px solid var(--site-ink);
+  display: flex; justify-content: center;
+  padding: 5px 2px;
+  font-family: var(--display);
+  font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--site-ink);
+}
+.wrap { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
+.cols { display: flex; flex-direction: column; gap: 28px; padding: 18px 0 12px; }
+.main, .side { display: contents; }
+.lead { order: 1; }
+.status { order: 2; }
+.art { order: 3; }
+.facts { order: 4; }
+.timeline { order: 5; }
+.players { order: 6; }
+.missing { order: 7; }
+.sources { order: 8; }
+.nw { white-space: nowrap; }
+.kicker {
+  margin: 0 0 8px;
+  font-family: var(--sans); font-size: 11px; line-height: 1.3;
+  letter-spacing: 1.6px; text-transform: uppercase; font-weight: 700;
+  color: var(--kicker);
+}
+.kicker.brick { color: var(--brick); }
+h1 + .updated { margin-top: -6px; }
+.updated { margin: 0 0 16px; font-size: 13px; line-height: 1.4; color: #6b675e; font-style: italic; }
+h1 {
+  margin: 0 0 14px; font-size: 34px; line-height: 1.12;
+  letter-spacing: -0.02em; font-weight: 700;
+}
+h2 { margin: 0 0 10px; font-size: 22px; line-height: 1.25; font-weight: 700; }
+h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.3; font-weight: 700; }
+p { margin: 0 0 12px; }
+p:last-child { margin-bottom: 0; }
+.dek { margin: 0; }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 0; }
+.credit {
+  margin: 6px 0 0;
+  font-family: var(--sans); font-size: 12px; line-height: 1.35; color: var(--soft);
+}
+.status {
+  background: var(--panel);
+  border-top: 3px solid var(--brick);
+  padding: 16px 18px 18px;
+}
+.status .when { margin: 0 0 6px; font-size: 20px; line-height: 1.3; font-weight: 700; }
+.status .where { margin: 0; font-size: 16px; line-height: 1.45; color: var(--mute); }
+.panel {
+  background: var(--panel);
+  border-top: 1px solid var(--sage);
+  padding: 16px 18px 18px;
+}
+.phases {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 14px 0 0;
+}
+.phase {
+  background: var(--canvas);
+  padding: 14px 14px 16px;
+  border-top: 2px solid var(--ink);
+}
+.phase .num {
+  margin: 0; font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em;
+}
+.phase .lbl {
+  margin: 4px 0 0;
+  font-family: var(--sans); font-size: 12px; line-height: 1.35;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--mute); font-weight: 700;
+}
+.phase p { margin: 8px 0 0; font-size: 15px; line-height: 1.4; color: var(--ink); }
+.total {
+  margin: 12px 0 0;
+  font-family: var(--sans); font-size: 13px; line-height: 1.45; color: var(--mute);
+}
+.timeline ol { list-style: none; margin: 8px 0 0; padding: 0; }
+.item {
+  position: relative;
+  padding: 0 0 20px 28px;
+  border-left: 1px solid var(--sage);
+}
+.item:last-child { padding-bottom: 0; border-left-color: transparent; }
+.item::before {
+  content: "";
+  position: absolute; left: -6px; top: 6px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 3px var(--canvas);
+}
+.item.upcoming::before { background: var(--canvas); border: 2px solid var(--brick); width: 9px; height: 9px; }
+.item.next::before { background: var(--brick); border: 0; width: 11px; height: 11px; }
+.when-label {
+  margin: 0 0 4px;
+  font-family: var(--sans); font-size: 12px; line-height: 1.3;
+  letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
+  color: var(--brick);
+}
+.item h3 { margin: 0 0 6px; font-size: 20px; }
+.flag {
+  display: inline-block; margin: 0 8px 0 0;
+  font-family: var(--sans); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 700; color: var(--brick);
+}
+.points { margin: 8px 0 0; padding: 0 0 0 18px; }
+.points li { margin: 0 0 8px; }
+.sources ul, .missing ul { margin: 8px 0 0; padding: 0 0 0 18px; }
+.sources li, .missing li { margin: 0 0 10px; padding: 0; }
+footer {
+  margin-top: 8px; padding: 26px 0 36px; text-align: center;
+  border-top: 3px double var(--ink);
+}
+@media (max-width: 700px) {
+  .edition { font-size: 11px; letter-spacing: 0.26em; gap: 10px; }
+  .edition::before, .edition::after { width: 28px; }
+  .dateline { font-size: 11px; letter-spacing: 0.06em; }
+}
+@media (min-width: 621px) {
+  body { font-size: 17px; }
+  h1 { font-size: 42px; }
+  .status .when { font-size: 22px; }
+}
+@media (min-width: 760px) {
+  .mast { padding: 26px 32px 0; }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 36px 48px;
+    align-items: start;
+    padding-top: 12px;
+  }
+  .main, .side {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .lead, .status, .art, .facts, .timeline, .players, .missing, .sources { order: 0; }
+  .phases { grid-template-columns: 1fr; }
+}
+
+.site-nav{border-bottom:1px solid #151311;background:var(--canvas,#f3efe6)}
+.site-nav .w{max-width:1080px;margin:0 auto;padding:0 22px}
+.site-nav ul{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 18px;list-style:none;margin:0;padding:10px 0}
+.site-nav a{color:#3a362f;text-decoration:none;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.site-nav a:hover,.site-nav a:focus-visible{color:#151311}
+.site-nav a[aria-current="page"]{color:#151311;box-shadow:inset 0 -1px 0 #151311}
+footer.site-foot{margin-top:8px;padding:14px 0 36px;text-align:center;border-top:1px solid #151311;font-size:13px;color:#3a362f;font-family:'Source Serif 4',Georgia,'Times New Roman',serif}
+footer.site-foot a{color:#151311}
+footer.site-foot .w{max-width:1080px;margin:0 auto;padding:0 22px}
+</style>
+</head>
+<body>
+<div class="notice-strip" role="status"><b>Still in beta</b>, not ready for the public yet.</div>
+<header>
+  <div class="mast">
+    <a class="nameplate" href="/"><p class="nameplate">The Maine Ledger</p></a>
+    <p class="edition">Midcoast Editions</p>
+    <div class="dateline"><span>Harpswell · Project tracker</span></div>
+  </div>
+</header>
+<nav class="site-nav" aria-label="Site">
+  <div class="w">
+    <ul>
+      <li><a href="/">Subscribe</a></li>
+      <li><a href="/archive/">Archive</a></li>
+      <li><a href="/trackers/" aria-current="page">Trackers</a></li>
+      <li><a href="/advertise/">Advertise</a></li>
+      <li><a href="/about/">About</a></li>
+    </ul>
+  </div>
+</nav>
+<main class="wrap">
+  <div class="cols">
+    <div class="main">
+    <section class="lead">
+      <p class="kicker brick">Project tracker</p>
+      <h1>Mitchell Field's future</h1>
+      <p class="updated">Last updated <time datetime="2026-11-10">Nov. 10, 2026</time></p>
+      <h2>What's happening</h2>
+      <p class="dek">On Oct. 22, the Harpswell Select Board unanimously supported a plan for the Midcoast Council of Governments to hold public workshops before the end of 2026 on the future of George J. Mitchell Field, including two remaining Navy-era buildings. The meeting costs would be covered by a grant. MCOG also offered to submit a formal proposal for a strategic plan in 2027. Workshop dates have not been announced.</p>
+    </section>
+
+    <figure class="art">
+      <img src="mitchell-field.jpg" width="1072" height="603" alt="Ink drawing of an open waterfront field with a boat ramp, pines, and a simple shed">
+      <figcaption class="credit">Illustration for The Maine Ledger</figcaption>
+    </figure>
+
+    <section class="timeline">
+      <p class="kicker">The timeline</p>
+      <h2>How the plan has moved</h2>
+      <ol>
+        <li class="item">
+          <p class="when-label">1954</p>
+          <h3>The Navy fuel depot is built</h3>
+          <p>The administration building, later demolished, was built in 1954 as part of the U.S. Navy fuel depot that supplied the former Brunswick Naval Air Station.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">1992</p>
+          <h3>The Navy closes the depot</h3>
+          <p>The Portland Press Herald has written that the Navy closed the fuel depot in 1992. The Harpswell Anchor has written that the last fuel tank was drained that year.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">2001</p>
+          <h3>The town takes ownership</h3>
+          <p>The federal government transferred the former U.S. Navy fuel depot on Harpswell Neck to the town. Recent coverage describes the property as about 120 acres, with shorefront on Middle Bay.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">May 20, 2004</p>
+          <h3>Voters name the property</h3>
+          <p>A special town meeting voted to name the former Department of Defense fuel depot The George Mitchell Field.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">June 10, 2025</p>
+          <h3>Voters approve demolishing the administration building</h3>
+          <p>A town referendum passed 877 to 676, authorizing up to $230,000 to demolish the vacant waterfront building and remove hazardous materials.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">December 2025 to early 2026</p>
+          <h3>The building comes down</h3>
+          <p>Lakeside Concrete Cutting demolished the structure for about $144,100. In January 2026, the Select Board voted 3-0 to spend about $40,000 more to remove the concrete slab and foundation.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">March 2026</p>
+          <h3>Town Meeting sets aside sentry-building funds</h3>
+          <p>Voters authorized up to $50,000 to remove hazardous materials from the sentry building at the park entrance. What happens to the building itself has not been decided.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">June 11, 2026</p>
+          <h3>The all-tide boat launch opens</h3>
+          <p>The town opened a new boat launch at Mitchell Field. Construction cost about $1.58 million. The town says the ramp can be used at all tides, with trailer parking near the bandstand.</p>
+        </li>
+        <li class="item">
+          <p class="when-label">Oct. 22, 2026</p>
+          <h3>The Select Board backs public workshops</h3>
+          <p>The board unanimously supported MCOG holding a couple of public meetings before the end of 2026, with the costs covered by a grant, and unanimously approved $2,000 to smooth and clear the old administration-building site for pedestrian safety. Day-to-day stewardship is moving from a volunteer role to town staff.</p>
+        </li>
+        <li class="item upcoming next">
+          <p class="when-label"><span class="flag">Next</span> Before the end of 2026</p>
+          <h3>Public workshops on the field's future</h3>
+          <p>MCOG would gather residents' feedback, including what to do with the sentry and generator buildings. Dates, times, and places have not been announced.</p>
+        </li>
+        <li class="item upcoming">
+          <p class="when-label">Proposed for 2027</p>
+          <h3>A strategic plan</h3>
+          <p>MCOG offered to submit a formal proposal to complete a strategic plan for Mitchell Field in 2027. That proposal has not been posted, and the plan has not been approved.</p>
+        </li>
+      </ol>
+    </section>
+    </div>
+    <div class="side">
+    <div class="status">
+      <p class="kicker brick">Next</p>
+      <p class="when">Public workshops before the end of 2026</p>
+      <p class="where">Dates, times, and places have not been announced. The town minutes say the Midcoast Council of Governments would hold a couple of public meetings, with the costs covered by a grant.</p>
+    </div>
+
+    <section class="facts panel">
+      <p class="kicker">The property</p>
+      <h2>Key points</h2>
+      <div class="phases" aria-label="Workshops this year and a proposed plan next year">
+        <div class="phase">
+          <p class="lbl">This year</p>
+          <p class="num">2</p>
+          <p>public workshops planned, dates not set</p>
+        </div>
+        <div class="phase">
+          <p class="lbl">Proposed</p>
+          <p class="num">2027</p>
+          <p>strategic plan, if a proposal is accepted</p>
+        </div>
+      </div>
+      <p class="total">Nothing about the remaining buildings has been decided.</p>
+      <ul class="points">
+        <li>About 120 acres on Harpswell Neck, with shorefront on Middle Bay</li>
+        <li>Former Navy fuel depot dating to 1954; the town has owned it since 2001, and voters named it The George Mitchell Field in 2004</li>
+        <li>Two remaining Navy-era buildings: the sentry building at the entrance and the larger generator building, now used for storage</li>
+        <li>Voters have already authorized up to $50,000 to remove hazardous materials from the sentry building</li>
+        <li>Estimates to deal with hazards in the generator building range from $95,000 to $150,000, or as much as $230,000 if the building is removed</li>
+        <li>The former administration-building site could become parking or stay open space; there is no current redevelopment plan</li>
+      </ul>
+    </section>
+
+    <section class="players panel">
+      <p class="kicker">The stakes</p>
+      <h2>Who decides</h2>
+      <h3>Select Board</h3>
+      <p>On Oct. 22 it unanimously supported the 2026 workshop approach and approved $2,000 for safety work at the old administration-building site. It also heard that day-to-day stewardship is moving to the town's parks director.</p>
+      <h3>Town Meeting</h3>
+      <p>Voters have made the large building decisions so far, including the 2025 demolition vote and the March 2026 authorization for sentry-building hazardous-materials work.</p>
+      <h3>What's being decided</h3>
+      <p>What to do with the sentry and generator buildings, and how the town should plan the rest of the property. MCOG would run the workshops and offered to propose a 2027 strategic plan. No building choice has been made.</p>
+    </section>
+
+    <section class="missing panel">
+      <p class="kicker">Gaps</p>
+      <h2>Not yet available</h2>
+      <ul>
+        <li>Dates, times, and places for the 2026 workshops</li>
+        <li>A posted listing of those workshops on the town calendar or MCOG's events page</li>
+        <li>MCOG's formal proposal for a 2027 strategic plan</li>
+        <li>A decision on whether to keep or remove the sentry building</li>
+        <li>A decision on whether to keep or remove the generator building</li>
+        <li>A long-term plan for the former administration-building site</li>
+        <li>Coverage of the October 2026 workshop plan in the Portland Press Herald, the Times Record, or News Center Maine</li>
+      </ul>
+    </section>
+
+    <section class="sources panel">
+      <p class="kicker">Records</p>
+      <h2>Details and sources</h2>
+      <ul>
+        <li>Minutes of the Oct. 22, 2026 Select Board meeting, approved Nov. 5, say Administrator Kristi Eiane recommended engaging the Midcoast Council of Governments to facilitate public conversations about future uses of Mitchell Field and possible actions involving the sentry and generator buildings. "MCOG has offered to hold a couple of public meetings before the end of 2026 with the costs covered by a grant, as well as submitting a formal proposal to complete a Strategic Plan for Mitchell Field in 2027." The board "unanimously supported moving forward with the approach through 2026."</li>
+        <li>The same minutes say management of Mitchell Field is transitioning from a volunteer steward model to town staff, with Parks, Recreation and Community Services Director Katie Neal coordinating day-to-day oversight. The board unanimously approved $2,000 to smooth depressions, remove rocks, and improve pedestrian safety at the vacant administration-building site. Broader decisions about future parking, open space, and long-term site design remain unresolved.</li>
+        <li>The minutes also say voters authorized up to $50,000 for hazardous-materials removal from the sentry building, and that estimated costs for the generator building range from $95,000 to $150,000 for removal of hazards alone, up to as much as $230,000. Cost estimates for the sentry building were obtained for both hazardous-materials work alone and complete demolition; the minutes do not list those dollar figures.</li>
+        <li>The Harpswell Anchor reported on Oct. 28, 2026, that the board voted 3-0 to accept MCOG's offer to host two workshop sessions later this year; that the property is a 120-acre park; that Lakeside Concrete Cutting estimated $31,700 to remove the sentry building or $42,800 to remove hazardous materials and keep it; and that workshop dates had not been announced. The Anchor also reported that voters approved demolishing the administration building in June 2025, that the town hired a contractor for $144,100, that the building was demolished that December, and that its foundation was removed in early 2026.</li>
+        <li>The Anchor reported on June 11, 2025, that a June 10 referendum approved demolition of the administration building, 877 to 676, and authorized spending up to $230,000. On Jan. 8, 2026, the Select Board voted 3-0 to have Lakeside remove the remaining slab and foundation for about $40,000, after the winning demolition bid of about $144,000 left money within the $230,000 cap.</li>
+        <li>The town's boat-launch page says a new all-tide launch opened at Mitchell Field in June 2026, with public trailer parking near the bandstand. The Anchor reported on June 22, 2026, that the launch opened June 11 and that Town Administrator Kristi Eiane said construction cost $1,576,762, with overall invoices still being tallied.</li>
+        <li>A June 10, 2024, Portland Press Herald story said Mitchell Field encompasses 120 acres with a half-mile of waterfront and that the federal government transferred the former U.S. Navy fuel depot to the town in 2001. A Sept. 15, 2024, Press Herald story said the administration building was built in 1954 as part of the U.S. Navy fuel depot for the former Naval Air Station Brunswick. A May 2, 2014, Press Herald story said the Navy closed the fuel depot in 1992 and that Harpswell acquired the property in 2001; a Sept. 11, 2019, Press Herald story repeated that the depot closed in 1992. A search of the Press Herald, the Times Record, and News Center Maine on Nov. 10, 2026, did not turn up coverage of the October 2026 workshop plan itself.</li>
+        <li>Results of a May 20, 2004, special town meeting, posted by the Town of Harpswell, say Article 20 was "Voted to accept as read" to "Name the former Depart. Of Defense Fuel Depot as The George Mitchell Field."</li>
+        <li>The Harpswell Anchor reported on Oct. 28, 2026, that the Navy opened the Casco Bay Fuel Depot in 1954, that the depot closed and its last fuel tank was drained in 1992, that the town acquired the property in 2001, and that residents approved naming it after former U.S. Sen. George Mitchell in 2004. The "last tank was drained" detail was not repeated in the Press Herald or town records read for this page, so it is attributed to the Anchor.</li>
+        <li>As of Nov. 10, 2026, the town meeting calendar and MCOG's upcoming-events page did not list dates for the Mitchell Field workshops.</li>
+        <li><a href="https://www.harpswell.maine.gov/vertical/sites/%7B3F690C92-5208-4D62-BAFB-2559293F6CAE%7D/uploads/10.22.26.pdf">Town of Harpswell Select Board minutes, Oct. 22, 2026</a></li>
+        <li><a href="https://harpswellanchor.org/2026/10/harpswell-seeks-public-input-on-mitchell-fields-future/">The Harpswell Anchor, Oct. 28, 2026</a></li>
+        <li><a href="https://harpswellanchor.org/2025/06/harpswell-voters-agree-to-build-fire-station-tear-down-administration-building/">The Harpswell Anchor, June 11, 2025</a></li>
+        <li><a href="https://harpswellanchor.org/2026/01/select-board-votes-to-remove-demolished-buildings-concrete-slab/">The Harpswell Anchor, Jan. 8, 2026</a></li>
+        <li><a href="https://harpswellanchor.org/2026/06/town-opens-boat-launch-at-mitchell-field-nearly-20-years-in-the-making/">The Harpswell Anchor, June 22, 2026</a></li>
+        <li><a href="https://www.harpswell.maine.gov/index.asp?SEC=%7BEA4ABF37-1F13-4728-A8EA-26776D545D59%7D">Town of Harpswell, Mitchell Field Boat Launch</a></li>
+        <li><a href="https://www.harpswell.maine.gov/vertical/sites/%7B3F690C92-5208-4D62-BAFB-2559293F6CAE%7D/uploads/%7B4C1D056A-EF7E-4C46-9117-E79803174011%7D.PDF">Town of Harpswell, Results of Special Town Meeting, May 20, 2004</a></li>
+        <li><a href="https://www.pressherald.com/2014/05/02/mitchell-field-building-in-harpswell-to-be-demolished/">Portland Press Herald, May 2, 2014</a></li>
+        <li><a href="https://www.pressherald.com/2019/09/11/harpswell-continues-mitchell-field-renovations/">Portland Press Herald, Sept. 11, 2019</a></li>
+        <li><a href="https://www.pressherald.com/2024/06/10/solar-contractor-proposes-array-at-harpswells-mitchell-field/">Portland Press Herald, June 10, 2024</a></li>
+        <li><a href="https://www.pressherald.com/2024/09/15/harpswell-mystery-group-wants-to-take-on-mitchell-field-building-rehab/">Portland Press Herald, Sept. 15, 2024</a></li>
+        <li><a href="https://www.harpswell.maine.gov/meeting-calendar">Town of Harpswell meeting calendar</a></li>
+        <li><a href="https://www.midcoastcog.com/upcoming">Midcoast Council of Governments, Upcoming</a></li>
+      </ul>
+    </section>
+    </div>
+  </div>
+</main>
+<footer class="site-foot">
+  <div class="w">
+    <p class="disc" style="margin:0 auto 12px;max-width:420px;font-size:14px;line-height:1.55;color:#7d7468">Built from public sources like town records, NOAA and local news. Spot a mistake? Write <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a>.</p>
+    <div>© 2026 The Maine Ledger · <a href="mailto:ben@themaineledger.com">ben@themaineledger.com</a></div>
+  </div>
+</footer>
+</body>
+</html>
