@@ -53,6 +53,25 @@ MONTHS_LONG = {
     11: "November",
     12: "December",
 }
+WEEKDAYS_SHORT = ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."]
+WEEKDAY_RE = (
+    r"(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun|Monday|Tuesday|Wednesday|"
+    r"Thursday|Friday|Saturday|Sunday)\.?"
+)
+MONTH_RE = (
+    r"(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|"
+    r"June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|"
+    r"Nov(?:ember)?|Dec(?:ember)?)\.?"
+)
+DATE_CHUNK_RE = re.compile(
+    rf"^(?:{WEEKDAY_RE}\s*,?\s*)?{MONTH_RE}\s+\d{{1,2}}"
+    rf"(?:st|nd|rd|th)?(?:,\s*\d{{4}})?$",
+    re.I,
+)
+STORY_CELL_RE = re.compile(
+    r'<td\b[^>]*class="[^"]*\bml-story\b[^"]*"[^>]*>([\s\S]*?)</td>',
+    re.I,
+)
 
 TEST_BANNER_TEXT = re.compile(r"^still in testing,\s*please do not forward\.?$", re.I)
 UNSUB_TEMPLATE = re.compile(
@@ -145,6 +164,135 @@ def visible_text(markup: str) -> str:
     text = re.sub(r"<[^>]+>", " ", markup)
     text = html_lib.unescape(text)
     return re.sub(r"\s+", " ", text).strip()
+
+
+def format_list_date(send_date: date) -> str:
+    weekday = WEEKDAYS_SHORT[send_date.weekday()]
+    month = MONTHS_SHORT[send_date.month]
+    return f"{weekday}, {month} {send_date.day}, {send_date.year}"
+
+
+def looks_like_headline(text: str) -> bool:
+    if not text or len(text) < 8:
+        return False
+    if DATE_CHUNK_RE.match(text):
+        return False
+    if re.fullmatch(r"The\s+Maine\s+Ledger", text, re.I):
+        return False
+    if text.lower() in {name.lower() for name in TOWNS.values()}:
+        return False
+    if text.isupper() and len(text) < 40:
+        return False
+    if re.search(r"\btop story\b", text, re.I) and len(text) < 40:
+        return False
+    if re.fullmatch(r"[\d$,.%]+", text.replace(",", "").replace(" ", "")):
+        return False
+    words = text.split()
+    if len(words) < 3:
+        return False
+    return True
+
+
+def derive_subject_from_title(title: str, town_label: str) -> str | None:
+    text = title.strip()
+    text = re.sub(r"^The\s+Maine\s+Ledger(?:\s*[·|:–—-]+\s*|\s+)", "", text, flags=re.I)
+    text = re.sub(
+        rf"(?:^|(?<=[·|:–—-])\s*){re.escape(town_label)}\s*(?:[·|:–—-]\s*|$)",
+        "",
+        text,
+        flags=re.I,
+    )
+    leftover = re.sub(r"[\s·|:–—,]+", " ", text).strip()
+    leftover = leftover.strip(" \t·|:–—,")
+    if not leftover or DATE_CHUNK_RE.match(leftover):
+        return None
+    leftover = re.sub(
+        rf"(?:[·|:–—-]\s*)?(?:{WEEKDAY_RE}\s*,?\s*)?{MONTH_RE}\s+\d{{1,2}}"
+        rf"(?:st|nd|rd|th)?(?:,\s*\d{{4}})?\s*$",
+        "",
+        leftover,
+        flags=re.I,
+    ).strip(" \t·|:–—,")
+    leftover = re.sub(r"\s+", " ", leftover).strip()
+    if not leftover or DATE_CHUNK_RE.match(leftover):
+        return None
+    if re.fullmatch(r"The\s+Maine\s+Ledger", leftover, re.I):
+        return None
+    if leftover.lower() == town_label.lower():
+        return None
+    if len(leftover) < 3:
+        return None
+    return leftover
+
+
+def extract_headline_from_html(html: str) -> str | None:
+    cells = STORY_CELL_RE.findall(html)
+    regions = cells if cells else [html]
+    for region in regions:
+        for match in P_TAG.finditer(region):
+            block = match.group(0)
+            if re.search(
+                r'class="[^"]*\b(?:ml-label|ml-kicker|ml-credit|ml-body)\b',
+                block,
+                re.I,
+            ):
+                continue
+            opening = block.split(">", 1)[0]
+            size_match = re.search(r"font-size:\s*([\d.]+)px", opening, re.I)
+            if not size_match:
+                continue
+            size = float(size_match.group(1))
+            if size < 21:
+                continue
+            weighted = bool(
+                re.search(r"font-weight:\s*(700|bold)", opening, re.I)
+            ) or bool(re.search(r"<b\b", block, re.I))
+            if not weighted and size < 24:
+                continue
+            text = visible_text(block)
+            if looks_like_headline(text):
+                return text
+    for match in re.finditer(r"<h[12]\b[^>]*>([\s\S]*?)</h[12]>", html, re.I):
+        text = visible_text(match.group(1))
+        if looks_like_headline(text):
+            return text
+    return None
+
+
+TOWN_SUBJECT_RE = re.compile(
+    r"^(?:" + "|".join(re.escape(name) for name in TOWNS.values()) + r"):\s+\S",
+    re.I,
+)
+
+
+def is_town_subject_title(title: str) -> bool:
+    return bool(TOWN_SUBJECT_RE.match(title.strip()))
+
+
+def is_old_style_title(title: str) -> bool:
+    return bool(re.match(r"^The\s+Maine\s+Ledger\b", title.strip(), re.I))
+
+
+def choose_display_subject(
+    title: str,
+    town: str,
+    html: str,
+    override: str | None = None,
+) -> tuple[str, str]:
+    if override and override.strip():
+        return override.strip(), "from --subject"
+    stripped = title.strip()
+    if is_town_subject_title(stripped):
+        return stripped, "from title"
+    if is_old_style_title(stripped):
+        from_title = derive_subject_from_title(stripped, TOWNS[town])
+        if from_title:
+            return from_title, "from title"
+        headline = extract_headline_from_html(html)
+        if headline:
+            return headline, "from first story headline"
+        return f"{TOWNS[town]} edition", "fallback"
+    return stripped, "from title"
 
 
 def is_tracking_img(tag: str) -> bool:
@@ -317,7 +465,11 @@ def load_manifest() -> list[dict]:
         send_date = item.get("date")
         title = item.get("title")
         if town in TOWNS and send_date and title:
-            issues.append({"town": town, "date": send_date, "title": title})
+            entry = {"town": town, "date": send_date, "title": title}
+            display = item.get("display_subject")
+            if display:
+                entry["display_subject"] = display
+            issues.append(entry)
     return issues
 
 
@@ -335,13 +487,26 @@ def save_manifest(issues: list[dict]) -> None:
     )
 
 
-def upsert_issue(issues: list[dict], town: str, send_date: str, title: str) -> list[dict]:
+def upsert_issue(
+    issues: list[dict],
+    town: str,
+    send_date: str,
+    title: str,
+    display_subject: str,
+) -> list[dict]:
     kept = [
         item
         for item in issues
         if not (item["town"] == town and item["date"] == send_date)
     ]
-    kept.append({"town": town, "date": send_date, "title": title})
+    kept.append(
+        {
+            "town": town,
+            "date": send_date,
+            "title": title,
+            "display_subject": display_subject,
+        }
+    )
     return kept
 
 
@@ -363,12 +528,16 @@ def render_index(issues: list[dict]) -> str:
         sections.append('    <ul class="archive-list">')
         for item in items:
             parsed = date.fromisoformat(item["date"])
-            when = f"{MONTHS_SHORT[parsed.month]} {parsed.day}, {parsed.year}"
+            when = format_list_date(parsed)
             href = f"/archive/{slug}/{item['date']}/"
-            title = html_lib.escape(item["title"])
+            subject = item.get("display_subject") or derive_subject_from_title(
+                item["title"], TOWNS[slug]
+            ) or f"{TOWNS[slug]} edition"
+            subject = html_lib.escape(subject)
             sections.append(
-                f'      <li><a href="{href}">{title}</a>'
-                f'<time datetime="{item["date"]}">{when}</time></li>'
+                f'      <li>'
+                f'<time datetime="{item["date"]}">{when}</time>'
+                f'<a href="{href}">{subject}</a></li>'
             )
         sections.append("    </ul>")
 
@@ -395,15 +564,19 @@ def render_index(issues: list[dict]) -> str:
     )
 
 
-def render_issue_page(town: str, send_date: date, title: str) -> str:
+def render_issue_page(
+    town: str, send_date: date, title: str, display_subject: str
+) -> str:
     town_label = TOWNS[town]
     long_date = f"{MONTHS_LONG[send_date.month]} {send_date.day}, {send_date.year}"
     description = html_lib.escape(f"The {town_label} edition sent {long_date}.")
-    escaped_title = html_lib.escape(title)
+    escaped_subject = html_lib.escape(display_subject)
+    page_title = html_lib.escape(f"{display_subject} · The Maine Ledger")
+    when = format_list_date(send_date)
     canonical = f"https://themaineledger.com/archive/{town}/{send_date.isoformat()}/"
     head = CHROME_HEAD.format(
-        title=escaped_title,
-        og_title=escaped_title,
+        title=page_title,
+        og_title=page_title,
         description=description,
         canonical=canonical,
     )
@@ -411,8 +584,11 @@ def render_issue_page(town: str, send_date: date, title: str) -> str:
         head
         + f"""<main class="w issue-shell">
   <p class="back"><a href="/archive/">Back to the archive</a></p>
-  <h1 class="sr">{escaped_title}</h1>
-  <iframe class="issue-frame" id="issue-frame" src="body.html" title="{escaped_title}" scrolling="no"></iframe>
+  <header class="issue-head">
+    <time datetime="{send_date.isoformat()}">{when}</time>
+    <h1>{escaped_subject}</h1>
+  </header>
+  <iframe class="issue-frame" id="issue-frame" src="body.html" title="{escaped_subject}" scrolling="no" frameborder="0" style="display:block;width:100%;max-width:600px;margin:0 auto;border:0;overflow:hidden;"></iframe>
 </main>
 <script>
 (function(){{
@@ -464,6 +640,10 @@ def main(argv: list[str] | None = None) -> int:
         "--title",
         help="Issue title (email subject). Required if the HTML has no title.",
     )
+    parser.add_argument(
+        "--subject",
+        help="Display subject for the archive listing. If omitted, derived from the title or the first story headline.",
+    )
     args = parser.parse_args(argv)
 
     town = args.town.lower().strip()
@@ -485,14 +665,21 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     cleaned, notes = clean_email(raw)
+    display_subject, subject_source = choose_display_subject(
+        title, town, raw, args.subject
+    )
     dest_dir = ARCHIVE / town / send_date.isoformat()
     dest_dir.mkdir(parents=True, exist_ok=True)
     body_path = dest_dir / "body.html"
     page_path = dest_dir / "index.html"
     body_path.write_text(wrap_email_document(cleaned, title), encoding="utf-8")
-    page_path.write_text(render_issue_page(town, send_date, title), encoding="utf-8")
+    page_path.write_text(
+        render_issue_page(town, send_date, title, display_subject), encoding="utf-8"
+    )
 
-    issues = upsert_issue(load_manifest(), town, send_date.isoformat(), title)
+    issues = upsert_issue(
+        load_manifest(), town, send_date.isoformat(), title, display_subject
+    )
     ARCHIVE.mkdir(parents=True, exist_ok=True)
     save_manifest(issues)
     index_path = ARCHIVE / "index.html"
@@ -505,6 +692,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Wrote {rel(page_path)}")
     print(f"Updated {rel(MANIFEST)}")
     print(f"Wrote {rel(index_path)}")
+    print(f"Display subject: {display_subject} ({subject_source})")
     for note in notes:
         print(note)
     return 0
