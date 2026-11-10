@@ -51,22 +51,22 @@ h1{font:700 34px/1.08 'Source Serif 4',Georgia,serif;margin:0 0 10px;letter-spac
 .lab-scale{font:400 15px 'Source Serif 4',Georgia,serif;fill:#3d3a34}
 .lab-n{font:600 15px 'Source Serif 4',Georgia,serif;fill:#3d3a34}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-.pin{position:absolute;transform:translate(-50%,-50%);padding:12px 16px;margin:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer;z-index:3}
-.pin-name{display:block;font:italic 400 14px/1.2 'Source Serif 4',Georgia,serif;color:#4a4640;letter-spacing:.02em;white-space:nowrap;
-  text-shadow:0 0 3px #f7f3ea,1px 0 2px #f7f3ea,-1px 0 2px #f7f3ea,0 1px 2px #f7f3ea,0 -1px 2px #f7f3ea,2px 1px 3px #f7f3ea,-2px 1px 3px #f7f3ea}
-.pin.is-on .pin-name,.pin:hover .pin-name,.pin:focus-visible .pin-name{color:#151311}
+.pin{position:absolute;transform:translate(-50%,-50%);padding:14px 18px;margin:0;border:0;background:none;font:inherit;color:inherit;cursor:pointer;z-index:3}
+.pin-name{display:block;font:400 9.5px/1.2 'Source Serif 4',Georgia,serif;font-style:normal;font-variant:normal;text-transform:none;letter-spacing:.015em;color:#55554c;white-space:nowrap;
+  paint-order:stroke fill;stroke:#f7f3ea;stroke-width:2px;stroke-linejoin:round;-webkit-text-stroke:2px #f7f3ea}
+.pin.is-on .pin-name,.pin:hover .pin-name,.pin:focus-visible .pin-name{color:#3a3a34}
 .pin:focus-visible{outline:none}
 .pin:focus-visible .pin-name{box-shadow:0 1px 0 rgba(21,19,17,.4)}
-.map-stage .pin-harpswell{left:76.32%;top:84.43%}
-.inset-stage .pin-harpswell{left:57.49%;top:68.25%}
-.map-stage .pin-topsham{left:74.44%;top:67.42%}
-.inset-stage .pin-topsham{left:53.80%;top:22.59%}
-.map-stage .pin-freeport{left:60.48%;top:78.22%}
-.inset-stage .pin-freeport{left:26.43%;top:51.59%}
-.map-stage .pin-bath{left:86.34%;top:70.72%}
-.inset-stage .pin-bath{left:77.13%;top:31.47%}
-.map-stage .pin-brunswick{left:73.05%;top:74.51%}
-.inset-stage .pin-brunswick{left:51.08%;top:41.62%}
+.map-stage .pin-harpswell{left:76.12%;top:83.07%}
+.inset-stage .pin-harpswell{left:57.10%;top:64.61%}
+.map-stage .pin-topsham{left:73.71%;top:68.37%}
+.inset-stage .pin-topsham{left:52.37%;top:25.16%}
+.map-stage .pin-freeport{left:61.96%;top:77.04%}
+.inset-stage .pin-freeport{left:29.33%;top:48.43%}
+.map-stage .pin-bath{left:86.02%;top:70.15%;transform:translate(-50%,-50%) rotate(76.65deg)}
+.inset-stage .pin-bath{left:76.51%;top:29.93%;transform:translate(-50%,-50%) rotate(76.65deg)}
+.map-stage .pin-brunswick{left:71.11%;top:73.71%}
+.inset-stage .pin-brunswick{left:47.27%;top:39.47%}
 .town,.inset-town{cursor:pointer}
 .inset-stage{display:none;position:relative;width:100%;aspect-ratio:510 / 517.9;border:1px solid #151311;background:#e3e8e7;overflow:hidden;margin-top:10px}
 .inset-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -96,7 +96,7 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
 @media(min-width:880px){
   .front{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0}
   .front > .map-col{padding-right:26px}
-  .map-stage .pin-name{font-size:13px}
+  .map-stage .pin-name{font-size:9px;letter-spacing:.015em}
 }
 @media(max-width:879px){
   .front > .sub-col{order:-1}
@@ -104,7 +104,7 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
   .me-svg .inset,.me-svg .locator-rays{display:none}
   .map-stage > .pin{display:none}
   .inset-stage{display:block}
-  .pin-name{font-size:15px}
+  .pin-name{font-size:10.5px;letter-spacing:.015em}
 }
 @media(max-width:700px){
   .nameplate{font-size:10.6vw}
