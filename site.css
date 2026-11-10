@@ -72,7 +72,7 @@ main{flex:1}
 .archive-list li{display:grid;grid-template-columns:9rem 1fr;gap:6px 18px;align-items:baseline;padding:12px 0;border-bottom:1px solid #e4ddd0}
 .archive-list li:first-child{border-top:1px solid #e4ddd0}
 .archive-list time{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;letter-spacing:.03em;color:#7a746a;font-style:normal;white-space:nowrap}
-.archive-list a{color:#151311;text-decoration:none}
+.archive-list a{color:#151311;text-decoration:none;font-style:italic}
 .archive-list a:hover{text-decoration:underline;text-underline-offset:3px}
 .archive-empty{color:#5d584f;font-style:italic;margin:0}
 
