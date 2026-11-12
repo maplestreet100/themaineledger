@@ -141,7 +141,6 @@ CHROME_HEAD = """<!doctype html>
     <ul>
       <li><a href="/">Subscribe</a></li>
       <li><a href="/archive/" aria-current="page">Archive</a></li>
-      <li><a href="/trackers/">Following</a></li>
       <li><a href="/advertise/">Advertise</a></li>
       <li><a href="/about/">About</a></li>
     </ul>
