@@ -16,14 +16,23 @@ ROOT = Path(__file__).resolve().parent.parent
 ARCHIVE = ROOT / "archive"
 MANIFEST = ARCHIVE / "issues.json"
 
+# Towns with a current edition. Only these can be published.
 TOWNS = {
     "brunswick": "Brunswick",
-    "topsham": "Topsham",
     "harpswell": "Harpswell",
-    "bath": "Bath",
     "freeport": "Freeport",
 }
-TOWN_ORDER = ["brunswick", "topsham", "harpswell", "bath", "freeport"]
+TOWN_ORDER = ["brunswick", "harpswell", "freeport"]
+
+# Towns no longer published. Their sent issues stay in the manifest and stay
+# reachable, but the archive index lists them apart from current editions.
+PAST_TOWNS = {
+    "topsham": "Topsham",
+    "bath": "Bath",
+}
+PAST_TOWN_ORDER = ["topsham", "bath"]
+ALL_TOWNS = {**TOWNS, **PAST_TOWNS}
+ALL_TOWN_ORDER = TOWN_ORDER + PAST_TOWN_ORDER
 
 MONTHS_SHORT = {
     1: "Jan.",
@@ -133,7 +142,7 @@ CHROME_HEAD = """<!doctype html>
   <div class="mast-row">
     <p class="nameplate"><a href="/">The Maine Ledger</a></p>
   </div>
-  <div class="edition">Midcoast Editions</div>
+  <div class="edition">Local Editions</div>
   <div class="dateline"><span class="dl-date" id="today"></span></div>
 </header>
 <nav class="site-nav" aria-label="Site">
@@ -178,7 +187,7 @@ def looks_like_headline(text: str) -> bool:
         return False
     if re.fullmatch(r"The\s+Maine\s+Ledger", text, re.I):
         return False
-    if text.lower() in {name.lower() for name in TOWNS.values()}:
+    if text.lower() in {name.lower() for name in ALL_TOWNS.values()}:
         return False
     if text.isupper() and len(text) < 40:
         return False
@@ -259,7 +268,7 @@ def extract_headline_from_html(html: str) -> str | None:
 
 
 TOWN_SUBJECT_RE = re.compile(
-    r"^(?:" + "|".join(re.escape(name) for name in TOWNS.values()) + r"):\s+\S",
+    r"^(?:" + "|".join(re.escape(name) for name in ALL_TOWNS.values()) + r"):\s+\S",
     re.I,
 )
 
@@ -463,7 +472,7 @@ def load_manifest() -> list[dict]:
         town = item.get("town")
         send_date = item.get("date")
         title = item.get("title")
-        if town in TOWNS and send_date and title:
+        if town in ALL_TOWNS and send_date and title:
             entry = {"town": town, "date": send_date, "title": title}
             display = item.get("display_subject")
             if display:
@@ -476,7 +485,9 @@ def save_manifest(issues: list[dict]) -> None:
     ordered = sorted(
         issues,
         key=lambda item: (
-            TOWN_ORDER.index(item["town"]) if item["town"] in TOWN_ORDER else 99,
+            ALL_TOWN_ORDER.index(item["town"])
+            if item["town"] in ALL_TOWN_ORDER
+            else 99,
             item["date"],
         ),
     )
@@ -509,8 +520,28 @@ def upsert_issue(
     return kept
 
 
+def render_issue_items(slug: str, items: list[dict]) -> list[str]:
+    label = ALL_TOWNS[slug]
+    lines = ['    <ul class="archive-list">']
+    for item in items:
+        parsed = date.fromisoformat(item["date"])
+        when = format_list_date(parsed)
+        href = f"/archive/{slug}/{item['date']}/"
+        subject = item.get("display_subject") or derive_subject_from_title(
+            item["title"], label
+        ) or f"{label} edition"
+        subject = html_lib.escape(subject)
+        lines.append(
+            f'      <li>'
+            f'<time datetime="{item["date"]}">{when}</time>'
+            f'<a href="{href}">{subject}</a></li>'
+        )
+    lines.append("    </ul>")
+    return lines
+
+
 def render_index(issues: list[dict]) -> str:
-    by_town = {slug: [] for slug in TOWN_ORDER}
+    by_town = {slug: [] for slug in ALL_TOWN_ORDER}
     for item in issues:
         if item["town"] in by_town:
             by_town[item["town"]].append(item)
@@ -524,21 +555,15 @@ def render_index(issues: list[dict]) -> str:
         if not items:
             sections.append('    <p class="archive-empty">No issues yet.</p>')
             continue
-        sections.append('    <ul class="archive-list">')
-        for item in items:
-            parsed = date.fromisoformat(item["date"])
-            when = format_list_date(parsed)
-            href = f"/archive/{slug}/{item['date']}/"
-            subject = item.get("display_subject") or derive_subject_from_title(
-                item["title"], TOWNS[slug]
-            ) or f"{TOWNS[slug]} edition"
-            subject = html_lib.escape(subject)
-            sections.append(
-                f'      <li>'
-                f'<time datetime="{item["date"]}">{when}</time>'
-                f'<a href="{href}">{subject}</a></li>'
-            )
-        sections.append("    </ul>")
+        sections.extend(render_issue_items(slug, items))
+
+    # Past towns appear only if they have sent issues, under one heading,
+    # so they read as past issues and not as editions to subscribe to.
+    past = [slug for slug in PAST_TOWN_ORDER if by_town[slug]]
+    if past:
+        sections.append("    <h2>No longer published</h2>")
+        for slug in past:
+            sections.extend(render_issue_items(slug, by_town[slug]))
 
     head = CHROME_HEAD.format(
         title="Archive · The Maine Ledger",
@@ -566,7 +591,7 @@ def render_index(issues: list[dict]) -> str:
 def render_issue_page(
     town: str, send_date: date, title: str, display_subject: str
 ) -> str:
-    town_label = TOWNS[town]
+    town_label = ALL_TOWNS[town]
     long_date = f"{MONTHS_LONG[send_date.month]} {send_date.day}, {send_date.year}"
     description = html_lib.escape(f"The {town_label} edition sent {long_date}.")
     escaped_subject = html_lib.escape(display_subject)

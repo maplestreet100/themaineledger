@@ -15,7 +15,7 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 ```
 
 - `<issue.html or directory>`: path to the sent email HTML, or a directory that contains one `.html` file (or one `em_*.html` file). JSON sidecars in that directory are ignored.
-- `<town>`: one of `brunswick`, `topsham`, `harpswell`, `bath`, `freeport`.
+- `<town>`: one of `brunswick`, `harpswell`, `freeport`. Bath and Topsham are no longer published; their past issues stay in the archive under "No longer published".
 - `<yyyy-mm-dd>`: the real send date, not the usual edition weekday.
 - `--title`: required if the HTML has no `<title>`. Use the email subject. This is stored as `title`.
 - `--subject`: optional display subject for the archive listing and the issue page header. Stored as `display_subject`.
