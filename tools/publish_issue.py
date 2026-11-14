@@ -550,7 +550,9 @@ def render_index(issues: list[dict]) -> str:
 
     sections: list[str] = []
     for slug in TOWN_ORDER:
-        sections.append(f"    <h2>{html_lib.escape(TOWNS[slug])}</h2>")
+        sections.append(
+            f'    <h2 id="{slug}">{html_lib.escape(TOWNS[slug])}</h2>'
+        )
         items = by_town[slug]
         if not items:
             sections.append('    <p class="archive-empty">No issues yet.</p>')
@@ -586,6 +588,47 @@ def render_index(issues: list[dict]) -> str:
 """
         + CHROME_FOOT
     )
+
+
+def render_redirect(target: str, town_label: str) -> str:
+    """A tiny page that sends the visitor straight to target."""
+    t = html_lib.escape(target, quote=True)
+    js = json.dumps(target)
+    label = html_lib.escape(town_label)
+    return (
+        "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">\n"
+        f"<title>Latest {label} edition · The Maine Ledger</title>\n"
+        '<meta name="robots" content="noindex">\n'
+        f'<link rel="canonical" href="https://themaineledger.com{html_lib.escape(target.split("#")[0], quote=True)}">\n'
+        f'<meta http-equiv="refresh" content="0; url={t}">\n'
+        f"<script>location.replace({js});</script>\n"
+        f'</head><body><p><a href="{t}">Latest {label} edition</a></p></body></html>\n'
+    )
+
+
+def latest_target(issues: list[dict], town: str) -> str:
+    """Newest archived issue for a town, or its archive heading if none yet."""
+    dates = sorted(item["date"] for item in issues if item["town"] == town)
+    if dates:
+        return f"/archive/{town}/{dates[-1]}/"
+    return f"/archive/#{town}"
+
+
+def write_latest_pages(issues: list[dict]) -> list[Path]:
+    """Write /archive/<town>/latest/ and /archive/<town>/ for each current town.
+
+    Both redirect to that town's newest issue. Stable links for the welcome
+    email and anywhere else; rewritten on every publish.
+    """
+    written = []
+    for town in TOWN_ORDER:
+        page = render_redirect(latest_target(issues, town), TOWNS[town])
+        for folder in (ARCHIVE / town / "latest", ARCHIVE / town):
+            folder.mkdir(parents=True, exist_ok=True)
+            path = folder / "index.html"
+            path.write_text(page, encoding="utf-8")
+            written.append(path)
+    return written
 
 
 def render_issue_page(
@@ -657,9 +700,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Publish a sent issue into the self-hosted /archive/."
     )
-    parser.add_argument("source", help="Issue HTML file, or a directory containing one")
-    parser.add_argument("town", help="Town slug: " + ", ".join(TOWN_ORDER))
-    parser.add_argument("date", help="Send date YYYY-MM-DD")
+    parser.add_argument(
+        "source", nargs="?", help="Issue HTML file, or a directory containing one"
+    )
+    parser.add_argument("town", nargs="?", help="Town slug: " + ", ".join(TOWN_ORDER))
+    parser.add_argument("date", nargs="?", help="Send date YYYY-MM-DD")
+    parser.add_argument(
+        "--rebuild",
+        action="store_true",
+        help="Publish nothing; just regenerate the archive index and latest links from issues.json.",
+    )
     parser.add_argument(
         "--title",
         help="Issue title (email subject). Required if the HTML has no title.",
@@ -669,6 +719,20 @@ def main(argv: list[str] | None = None) -> int:
         help="Display subject for the archive listing. If omitted, derived from the title or the first story headline.",
     )
     args = parser.parse_args(argv)
+
+    def rel(path: Path) -> Path:
+        return path.resolve().relative_to(ROOT)
+
+    if args.rebuild:
+        issues = load_manifest()
+        index_path = ARCHIVE / "index.html"
+        index_path.write_text(render_index(issues), encoding="utf-8")
+        print(f"Wrote {rel(index_path)}")
+        for path in write_latest_pages(issues):
+            print(f"Wrote {rel(path)}")
+        return 0
+    if not (args.source and args.town and args.date):
+        parser.error("source, town and date are required unless --rebuild is given")
 
     town = args.town.lower().strip()
     if town not in TOWNS:
@@ -708,14 +772,14 @@ def main(argv: list[str] | None = None) -> int:
     save_manifest(issues)
     index_path = ARCHIVE / "index.html"
     index_path.write_text(render_index(issues), encoding="utf-8")
-
-    def rel(path: Path) -> Path:
-        return path.resolve().relative_to(ROOT)
+    latest_paths = write_latest_pages(issues)
 
     print(f"Wrote {rel(body_path)}")
     print(f"Wrote {rel(page_path)}")
     print(f"Updated {rel(MANIFEST)}")
     print(f"Wrote {rel(index_path)}")
+    for path in latest_paths:
+        print(f"Wrote {rel(path)}")
     print(f"Display subject: {display_subject} ({subject_source})")
     for note in notes:
         print(note)

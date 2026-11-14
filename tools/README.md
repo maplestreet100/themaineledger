@@ -27,6 +27,20 @@ python3 tools/publish_issue.py path/to/em_example.html freeport 2026-11-12 --tit
 python3 tools/publish_issue.py path/to/em_example.html brunswick 2026-11-10 --title "The Maine Ledger · Brunswick · Tue., Nov. 10" --subject "Brunswick: Data-center hearing set for Nov. 16"
 ```
 
+### Latest-edition links
+
+Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each current town (brunswick, harpswell, freeport). Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
+
+- https://themaineledger.com/archive/brunswick/latest/
+- https://themaineledger.com/archive/harpswell/latest/
+- https://themaineledger.com/archive/freeport/latest/
+
+A town with no issues yet redirects to its heading on the archive page (`/archive/#harpswell`). The pages are marked noindex. To regenerate the index and these links without publishing anything:
+
+```
+python3 tools/publish_issue.py --rebuild
+```
+
 ### Display subjects
 
 Each archive row shows the date first (`Tue., Nov. 10, 2026`), then the display subject as the link. The issue page keeps the back link, then uses the same date-then-subject pattern above the email. If a town heading already names the town, keep a `<Town>:` prefix on the subject anyway when that is the sent wording.
