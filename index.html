@@ -249,7 +249,6 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
         <button type="submit" id="sub">Subscribe</button>
       </div>
       <input type="hidden" value="1" name="embed">
-      <input type="hidden" name="tag" id="src-tag" value="site">
       <div class="kicker" style="margin-top:28px">Choose your editions</div>
       <div class="towns">
         <label><input type="checkbox" name="tag" value="Brunswick"><span class="swatch swatch-brunswick" aria-hidden="true"></span><span><span class="name">Brunswick</span> <span class="when">Fridays</span></span></label>
@@ -293,9 +292,6 @@ function toggleTown(name){
 (function(){
   try{document.getElementById('today').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'America/New_York'})}catch(e){}
   var params=new URLSearchParams(location.search);
-  var src=(params.get('src')||'').toLowerCase();
-  var srcTag=document.getElementById('src-tag');
-  if(srcTag && src==='flyer'){ srcTag.value='flyer'; }
   var wanted=[];
   params.getAll('town').forEach(function(v){
     String(v).split(',').forEach(function(part){
