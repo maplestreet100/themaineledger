@@ -83,7 +83,6 @@ button[type=submit]:hover{background:#3a362f}
 .towns label:last-child{border-bottom:0}
 .towns input{flex:0 0 auto;margin:0}
 .towns .name{font-weight:400}
-.towns .when{color:#8a8478;font-style:italic}
 .swatch{display:inline-block;width:10px;height:10px;flex:0 0 auto;border:1px solid #c9c2b6;position:relative;top:1px}
 .swatch-harpswell{background:#e0d2c6}.towns label:has(input[value="Harpswell"]:checked) .swatch-harpswell{background:#cbb6a6}.town-harpswell.is-on path,.inset-town.town-harpswell.is-on{fill:#cbb6a6}.swatch-freeport{background:#c8d6d9}.towns label:has(input[value="Freeport"]:checked) .swatch-freeport{background:#adc4c9}.town-freeport.is-on path,.inset-town.town-freeport.is-on{fill:#adc4c9}.swatch-brunswick{background:#c6d4c9}.towns label:has(input[value="Brunswick"]:checked) .swatch-brunswick{background:#a8beb0}.town-brunswick.is-on path,.inset-town.town-brunswick.is-on{fill:#a8beb0}
 
@@ -251,9 +250,9 @@ footer{border-top:1px solid #151311;padding:14px 0 36px;font-size:13px;text-alig
       <input type="hidden" value="1" name="embed">
       <div class="kicker" style="margin-top:28px">Choose your editions</div>
       <div class="towns">
-        <label><input type="checkbox" name="tag" value="Brunswick"><span class="swatch swatch-brunswick" aria-hidden="true"></span><span><span class="name">Brunswick</span> <span class="when">Fridays</span></span></label>
-        <label><input type="checkbox" name="tag" value="Freeport"><span class="swatch swatch-freeport" aria-hidden="true"></span><span><span class="name">Freeport</span> <span class="when">Fridays</span></span></label>
-        <label><input type="checkbox" name="tag" value="Harpswell"><span class="swatch swatch-harpswell" aria-hidden="true"></span><span><span class="name">Harpswell</span> <span class="when">Fridays</span></span></label>
+        <label><input type="checkbox" name="tag" value="Brunswick"><span class="swatch swatch-brunswick" aria-hidden="true"></span><span><span class="name">Brunswick</span></span></label>
+        <label><input type="checkbox" name="tag" value="Freeport"><span class="swatch swatch-freeport" aria-hidden="true"></span><span><span class="name">Freeport</span></span></label>
+        <label><input type="checkbox" name="tag" value="Harpswell"><span class="swatch swatch-harpswell" aria-hidden="true"></span><span><span class="name">Harpswell</span></span></label>
       </div>
       <p class="fine" id="town-note">Pick at least one town. You can add more later.</p>
       <p class="fine">Free. Unsubscribe anytime.</p>
