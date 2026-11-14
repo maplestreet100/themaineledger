@@ -6,7 +6,6 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 
 ## Files
 - `index.html` — **live homepage**: the Brunswick Edition page (formerly the local concept `statewide-map.html`).
-- `coastal-map.html` + `map.jpg` — previous coastal (Midcoast) homepage, kept byte-for-byte as a separate unlinked preview. Do not edit or delete.
 - Regeneration sources live outside the repo in `/workspace/statewide-map-build/` (`gen.py` → `build.py` → `assemble.py` writes `index.html`; template `tpl.html`; tests `test.py`, screenshots `final.py`/`zoom.py`).
 
 ## Current decisions (index.html)
@@ -23,7 +22,7 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - “Read the current edition →” as a link to the Buttondown archive → underlined, non-clickable text at Ben’s request.
 - Blurred “Sample only.” newsletter frame below the fold → removed at Ben’s request (Nov 5, 2026, after launch).
 - Local-only / no-push rule for the Brunswick page → superseded by Ben's approval to go live (future pushes still need approval).
-- Coastal page as `index.html` → moved to `coastal-map.html`; Brunswick Edition is the homepage.
+- Coastal page (`coastal-map.html` + `map.jpg`) → removed from the site at Ben's request (Nov 14, 2026).
 - Portland and Bangor shown as disabled/grayed areas → removed at Ben's request; show Brunswick only.
 - Region radio picker, area cards, “By Region”/“Statewide”/“Brunswick Edition” title → removed.
 - Red “blast radius” rings / pulsing animation, soft illustrative blob → replaced by the actual town boundary.
