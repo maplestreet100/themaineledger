@@ -19,10 +19,9 @@ MANIFEST = ARCHIVE / "issues.json"
 # Towns with a current edition. Only these can be published.
 TOWNS = {
     "brunswick": "Brunswick",
-    "harpswell": "Harpswell",
     "freeport": "Freeport",
 }
-TOWN_ORDER = ["brunswick", "harpswell", "freeport"]
+TOWN_ORDER = ["brunswick", "freeport"]
 
 # Towns no longer published. Their sent issues stay in the manifest and stay
 # reachable, but the archive index lists them apart from current editions.

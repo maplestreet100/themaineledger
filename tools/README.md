@@ -15,7 +15,7 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 ```
 
 - `<issue.html or directory>`: path to the sent email HTML, or a directory that contains one `.html` file (or one `em_*.html` file). JSON sidecars in that directory are ignored.
-- `<town>`: one of `brunswick`, `harpswell`, `freeport`. Bath and Topsham are no longer published; their past issues stay in the archive under "No longer published".
+- `<town>`: one of `brunswick`, `freeport`. Bath and Topsham are no longer published; their past issues stay in the archive under "No longer published".
 - `<yyyy-mm-dd>`: the real send date, not the usual edition weekday.
 - `--title`: required if the HTML has no `<title>`. Use the email subject. This is stored as `title`.
 - `--subject`: optional display subject for the archive listing and the issue page header. Stored as `display_subject`.
@@ -29,13 +29,12 @@ python3 tools/publish_issue.py path/to/em_example.html brunswick 2026-11-10 --ti
 
 ### Latest-edition links
 
-Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each current town (brunswick, harpswell, freeport). Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
+Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each current town (brunswick, freeport). Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
 
 - https://themaineledger.com/archive/brunswick/latest/
-- https://themaineledger.com/archive/harpswell/latest/
 - https://themaineledger.com/archive/freeport/latest/
 
-A town with no issues yet redirects to its heading on the archive page (`/archive/#harpswell`). The pages are marked noindex. To regenerate the index and these links without publishing anything:
+A town with no issues yet redirects to its heading on the archive page (`/archive/#<town>`). The pages are marked noindex. To regenerate the index and these links without publishing anything:
 
 ```
 python3 tools/publish_issue.py --rebuild
