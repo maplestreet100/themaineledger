@@ -140,7 +140,7 @@ CHROME_HEAD = """<!doctype html>
   <div class="mast-row">
     <p class="nameplate"><a href="/">The Maine Ledger</a></p>
   </div>
-  <div class="edition">Local Editions</div>
+  <div class="edition">Brunswick Edition</div>
   <div class="dateline"><span class="dl-date" id="today"></span></div>
 </header>
 <nav class="site-nav" aria-label="Site">
@@ -548,9 +548,12 @@ def render_index(issues: list[dict]) -> str:
 
     sections: list[str] = []
     for slug in TOWN_ORDER:
-        sections.append(
-            f'    <h2 id="{slug}">{html_lib.escape(TOWNS[slug])}</h2>'
-        )
+        # One current edition (Brunswick, Nov 17 2026): the lede names it, so no
+        # town subheading. With 2+ editions each gets its own heading again.
+        if len(TOWN_ORDER) > 1:
+            sections.append(
+                f'    <h2 id="{slug}">{html_lib.escape(TOWNS[slug])}</h2>'
+            )
         items = by_town[slug]
         if not items:
             sections.append('    <p class="archive-empty">No issues yet.</p>')
@@ -568,7 +571,7 @@ def render_index(issues: list[dict]) -> str:
     head = CHROME_HEAD.format(
         title="Archive · The Maine Ledger",
         og_title="Archive · The Maine Ledger",
-        description="Sent editions of The Maine Ledger, arranged by town.",
+        description="Past issues of The Maine Ledger, Brunswick edition.",
         canonical="https://themaineledger.com/archive/",
     )
     return (
@@ -577,7 +580,7 @@ def render_index(issues: list[dict]) -> str:
   <article class="page">
     <p class="kicker">Archive</p>
     <h1>Past issues</h1>
-    <p class="lede">Sent editions of The Maine Ledger, arranged by town.</p>
+    <p class="lede">Past issues of The Maine Ledger, Brunswick edition.</p>
 """
         + "\n".join(sections)
         + """
