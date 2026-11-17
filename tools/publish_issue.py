@@ -528,6 +528,10 @@ def render_issue_items(slug: str, items: list[dict]) -> list[str]:
         subject = item.get("display_subject") or derive_subject_from_title(
             item["title"], label
         ) or f"{label} edition"
+        # One current edition (Brunswick): the masthead already names it, so the
+        # archive list drops the leading "Brunswick: " (Ben, Nov 17 2026).
+        if len(TOWN_ORDER) == 1 and slug in TOWNS and subject.startswith(f"{label}: "):
+            subject = subject[len(label) + 2:]
         subject = html_lib.escape(subject)
         lines.append(
             f'      <li>'
@@ -571,7 +575,7 @@ def render_index(issues: list[dict]) -> str:
     head = CHROME_HEAD.format(
         title="Archive · The Maine Ledger",
         og_title="Archive · The Maine Ledger",
-        description="Past issues of The Maine Ledger, Brunswick edition.",
+        description="Past issues of The Maine Ledger.",
         canonical="https://themaineledger.com/archive/",
     )
     return (
@@ -580,7 +584,7 @@ def render_index(issues: list[dict]) -> str:
   <article class="page">
     <p class="kicker">Archive</p>
     <h1>Past issues</h1>
-    <p class="lede">Past issues of The Maine Ledger, Brunswick edition.</p>
+    <p class="lede">Past issues of The Maine Ledger.</p>
 """
         + "\n".join(sections)
         + """
