@@ -23,7 +23,7 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 Examples:
 
 ```
-python3 tools/publish_issue.py path/to/em_example.html brunswick 2026-11-10 --title "The Maine Ledger · Brunswick · Tue., Nov. 10" --subject "Brunswick: Data-center hearing set for Nov. 16"
+python3 tools/publish_issue.py path/to/em_example.html brunswick 2026-11-20 --title "Brunswick: Example headline" --subject "Brunswick: Example headline"
 ```
 
 ### Latest-edition links
