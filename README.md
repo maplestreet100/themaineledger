@@ -9,7 +9,7 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - Regeneration sources live outside the repo in `/workspace/statewide-map-build/` (`gen.py` → `build.py` → `assemble.py` writes `index.html`; template `tpl.html`; tests `test.py`, screenshots `final.py`/`zoom.py`).
 
 ## Current decisions (index.html)
-- Beta notice: exactly one, at the top: “Still in beta — not ready for the public yet.”
+- Beta notice: exactly one, at the top: “Now in beta. Full launch in December.” (Ben, Nov 17 2026)
 - Masthead: “The Maine Ledger” in Source Serif 4 (modern, classy, authoritative); “Brunswick Edition” as a small, centered, letterspaced edition line directly beneath the nameplate (hairlines either side); the date sits alone in the ruled date line.
 - Layout: newspaper rules, minimal words, no card UI. Mobile: signup before the map.
 - Signup: Brunswick only. Same Buttondown form and tag behavior as the coastal page (`zip-04011` default; `?src=flyer` → `flyer` unless `?zip=04011`). Never test-submit the real form.
