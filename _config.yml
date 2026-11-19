@@ -1,0 +1,6 @@
+# GitHub Pages: serve the site files only. Repo notes and tools stay in git
+# but are not published.
+exclude:
+  - README.md
+  - tools
+  - .gitignore
