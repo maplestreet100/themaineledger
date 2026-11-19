@@ -31,9 +31,9 @@ python3 tools/publish_issue.py path/to/em_example.html maine 2026-11-20 --title 
 Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each publishable town (maine, brunswick) that has at least one issue. Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
 
 - https://themaineledger.com/archive/maine/latest/ (statewide, the default; exists once the first maine issue is published)
-- https://themaineledger.com/archive/brunswick/latest/ (past edition, stays on the Nov 13, 2026 issue)
+- (The Brunswick Nov 13, 2026 issue was deleted from the archive on Nov 19, 2026 at Ben's request; brunswick has no archive pages now.)
 
-A town with no issues yet gets no redirect pages. The archive index shows the Statewide Edition first ("No issues yet." until the first one), then "Past editions". The pages are marked noindex. To regenerate the index and these links without publishing anything:
+A town with no issues yet gets no redirect pages. The archive index shows the Statewide Edition first ("No issues yet." until the first one), then "Past editions" when a past edition has issues. The pages are marked noindex. To regenerate the index and these links without publishing anything:
 
 ```
 python3 tools/publish_issue.py --rebuild
