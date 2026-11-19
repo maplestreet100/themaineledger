@@ -13,7 +13,7 @@ Static site served by GitHub Pages from `main` (`/`) at https://themaineledger.c
 - Masthead: “The Maine Ledger” in Source Serif 4 (modern, classy, authoritative); “Statewide Edition” as a small, centered, letterspaced edition line directly beneath the nameplate (hairlines either side); the date sits alone in the ruled date line.
 - Layout: newspaper rules, minimal words, no card UI. Mobile: signup before the map.
 - Signup: statewide. Buttondown embed form sends the email only, no tag (Nov 19, 2026). Never test-submit the real form.
-- Signup heading: “Maine, every Friday morning.” Deck: “Business, development and real estate across Maine, and what it means for you.”
+- Signup heading: “Maine, every Friday morning.” Deck: “Business, development and real estate across Maine.”
 - “Current edition” section directly below signup with “Read the current edition” shown underlined but not a link (no href, no click behavior, no pointer cursor).
 - Map: accurate Maine outline with county lines (U.S. Census Bureau 2023 cartographic boundary files, state/county `500k`; public domain), Gulf of Maine label, scale and north mark. Caption: “Maine. Map: U.S. Census Bureau.” No town shading, pins or inset. Never OSM outlines or `map.jpg`.
 - Above the fold only: beta notice, masthead, signup, Current edition link, map, short footer. No sample newsletter section.

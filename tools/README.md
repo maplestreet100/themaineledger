@@ -15,7 +15,7 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 ```
 
 - `<issue.html or directory>`: path to the sent email HTML, or a directory that contains one `.html` file (or one `em_*.html` file). JSON sidecars in that directory are ignored.
-- `<town>`: `brunswick` (the only current edition). Harpswell (Nov 15) and Freeport (Nov 17) were dropped and their pages removed. Bath and Topsham are no longer published; their past issues stay in the archive under "No longer published".
+- `<town>`: `maine` for the statewide edition (current and default, from Nov 20, 2026; labeled "Statewide Edition"). `brunswick` can still be published but is listed under "Past editions". Bath and Topsham are past editions that can no longer be published; their issues stay in the archive. Harpswell (Nov 15) and Freeport (Nov 17) were dropped and their pages removed.
 - `<yyyy-mm-dd>`: the real send date, not the usual edition weekday.
 - `--title`: required if the HTML has no `<title>`. Use the email subject. This is stored as `title`.
 - `--subject`: optional display subject for the archive listing and the issue page header. Stored as `display_subject`.
@@ -23,16 +23,17 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 Examples:
 
 ```
-python3 tools/publish_issue.py path/to/em_example.html brunswick 2026-11-20 --title "Brunswick: Example headline" --subject "Brunswick: Example headline"
+python3 tools/publish_issue.py path/to/em_example.html maine 2026-11-20 --title "Example headline"
 ```
 
 ### Latest-edition links
 
-Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each current town (brunswick). Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
+Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each publishable town (maine, brunswick) that has at least one issue. Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
 
-- https://themaineledger.com/archive/brunswick/latest/
+- https://themaineledger.com/archive/maine/latest/ (statewide, the default; exists once the first maine issue is published)
+- https://themaineledger.com/archive/brunswick/latest/ (past edition, stays on the Nov 13, 2026 issue)
 
-A town with no issues yet redirects to its heading on the archive page (`/archive/#<town>`). The pages are marked noindex. To regenerate the index and these links without publishing anything:
+A town with no issues yet gets no redirect pages. The archive index shows the Statewide Edition first ("No issues yet." until the first one), then "Past editions". The pages are marked noindex. To regenerate the index and these links without publishing anything:
 
 ```
 python3 tools/publish_issue.py --rebuild

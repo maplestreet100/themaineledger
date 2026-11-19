@@ -16,21 +16,36 @@ ROOT = Path(__file__).resolve().parent.parent
 ARCHIVE = ROOT / "archive"
 MANIFEST = ARCHIVE / "issues.json"
 
-# Towns with a current edition. Only these can be published.
+# Current editions, newest-first default. "maine" is the statewide edition
+# (Nov 20, 2026 onward); it is listed first and is the default/latest.
 TOWNS = {
-    "brunswick": "Brunswick",
+    "maine": "Maine",
 }
-TOWN_ORDER = ["brunswick"]
+TOWN_ORDER = ["maine"]
 
-# Towns no longer published. Their sent issues stay in the manifest and stay
-# reachable, but the archive index lists them apart from current editions.
+# Past editions. Their sent issues stay in the manifest and stay reachable,
+# but the archive index lists them under "Past editions".
 PAST_TOWNS = {
+    "brunswick": "Brunswick",
     "topsham": "Topsham",
     "bath": "Bath",
 }
-PAST_TOWN_ORDER = ["topsham", "bath"]
+PAST_TOWN_ORDER = ["brunswick", "topsham", "bath"]
 ALL_TOWNS = {**TOWNS, **PAST_TOWNS}
 ALL_TOWN_ORDER = TOWN_ORDER + PAST_TOWN_ORDER
+
+# Slugs that can still be published: every current edition, plus Brunswick
+# (past, but kept publishable in case a late local issue needs archiving).
+PUBLISHABLE_ORDER = TOWN_ORDER + ["brunswick"]
+
+# How an edition is named in archive headings, latest links and issue pages.
+EDITION_LABELS = {
+    "maine": "Statewide Edition",
+}
+
+
+def edition_label(slug: str) -> str:
+    return EDITION_LABELS.get(slug) or f"{ALL_TOWNS[slug]} edition"
 
 MONTHS_SHORT = {
     1: "Jan.",
@@ -290,13 +305,13 @@ def choose_display_subject(
     if is_town_subject_title(stripped):
         return stripped, "from title"
     if is_old_style_title(stripped):
-        from_title = derive_subject_from_title(stripped, TOWNS[town])
+        from_title = derive_subject_from_title(stripped, ALL_TOWNS[town])
         if from_title:
             return from_title, "from title"
         headline = extract_headline_from_html(html)
         if headline:
             return headline, "from first story headline"
-        return f"{TOWNS[town]} edition", "fallback"
+        return edition_label(town), "fallback"
     return stripped, "from title"
 
 
@@ -526,7 +541,7 @@ def render_issue_items(slug: str, items: list[dict]) -> list[str]:
         href = f"/archive/{slug}/{item['date']}/"
         subject = item.get("display_subject") or derive_subject_from_title(
             item["title"], label
-        ) or f"{label} edition"
+        ) or edition_label(slug)
         # The masthead is statewide now (Nov 19 2026), so town issues keep
         # their "Brunswick: " prefix in the list to say which edition they were.
         subject = html_lib.escape(subject)
@@ -548,12 +563,13 @@ def render_index(issues: list[dict]) -> str:
         by_town[slug].sort(key=lambda item: item["date"], reverse=True)
 
     sections: list[str] = []
+    past = [slug for slug in PAST_TOWN_ORDER if by_town[slug]]
     for slug in TOWN_ORDER:
-        # One current edition: no town subheading; the "Town: " prefix on each
-        # item names it. With 2+ editions each gets its own heading again.
-        if len(TOWN_ORDER) > 1:
+        # Name the current edition when there is anything else on the page
+        # (other current editions or past ones), so the groups read clearly.
+        if len(TOWN_ORDER) > 1 or past:
             sections.append(
-                f'    <h2 id="{slug}">{html_lib.escape(TOWNS[slug])}</h2>'
+                f'    <h2 id="{slug}">{html_lib.escape(edition_label(slug))}</h2>'
             )
         items = by_town[slug]
         if not items:
@@ -561,11 +577,10 @@ def render_index(issues: list[dict]) -> str:
             continue
         sections.extend(render_issue_items(slug, items))
 
-    # Past towns appear only if they have sent issues, under one heading,
+    # Past editions appear only if they have sent issues, under one heading,
     # so they read as past issues and not as editions to subscribe to.
-    past = [slug for slug in PAST_TOWN_ORDER if by_town[slug]]
     if past:
-        sections.append("    <h2>No longer published</h2>")
+        sections.append('    <h2 id="past">Past editions</h2>')
         for slug in past:
             sections.extend(render_issue_items(slug, by_town[slug]))
 
@@ -592,19 +607,19 @@ def render_index(issues: list[dict]) -> str:
     )
 
 
-def render_redirect(target: str, town_label: str) -> str:
+def render_redirect(target: str, link_label: str) -> str:
     """A tiny page that sends the visitor straight to target."""
     t = html_lib.escape(target, quote=True)
     js = json.dumps(target)
-    label = html_lib.escape(town_label)
+    label = html_lib.escape(link_label)
     return (
         "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">\n"
-        f"<title>Latest {label} edition · The Maine Ledger</title>\n"
+        f"<title>Latest {label} · The Maine Ledger</title>\n"
         '<meta name="robots" content="noindex">\n'
         f'<link rel="canonical" href="https://themaineledger.com{html_lib.escape(target.split("#")[0], quote=True)}">\n'
         f'<meta http-equiv="refresh" content="0; url={t}">\n'
         f"<script>location.replace({js});</script>\n"
-        f'</head><body><p><a href="{t}">Latest {label} edition</a></p></body></html>\n'
+        f'</head><body><p><a href="{t}">Latest {label}</a></p></body></html>\n'
     )
 
 
@@ -617,14 +632,19 @@ def latest_target(issues: list[dict], town: str) -> str:
 
 
 def write_latest_pages(issues: list[dict]) -> list[Path]:
-    """Write /archive/<town>/latest/ and /archive/<town>/ for each current town.
+    """Write /archive/<town>/latest/ and /archive/<town>/ for each publishable town.
 
     Both redirect to that town's newest issue. Stable links for the welcome
-    email and anywhere else; rewritten on every publish.
+    email and anywhere else; rewritten on every publish. A town with no
+    issues yet gets no redirect pages, so its folder does not exist until its
+    first issue (the Brunswick links keep pointing at the newest Brunswick
+    issue either way).
     """
     written = []
-    for town in TOWN_ORDER:
-        page = render_redirect(latest_target(issues, town), TOWNS[town])
+    for town in PUBLISHABLE_ORDER:
+        if not any(item["town"] == town for item in issues):
+            continue
+        page = render_redirect(latest_target(issues, town), edition_label(town))
         for folder in (ARCHIVE / town / "latest", ARCHIVE / town):
             folder.mkdir(parents=True, exist_ok=True)
             path = folder / "index.html"
@@ -636,9 +656,8 @@ def write_latest_pages(issues: list[dict]) -> list[Path]:
 def render_issue_page(
     town: str, send_date: date, title: str, display_subject: str
 ) -> str:
-    town_label = ALL_TOWNS[town]
     long_date = f"{MONTHS_LONG[send_date.month]} {send_date.day}, {send_date.year}"
-    description = html_lib.escape(f"The {town_label} edition sent {long_date}.")
+    description = html_lib.escape(f"The {edition_label(town)} sent {long_date}.")
     escaped_subject = html_lib.escape(display_subject)
     page_title = html_lib.escape(f"{display_subject} · The Maine Ledger")
     when = format_list_date(send_date)
@@ -705,7 +724,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "source", nargs="?", help="Issue HTML file, or a directory containing one"
     )
-    parser.add_argument("town", nargs="?", help="Town slug: " + ", ".join(TOWN_ORDER))
+    parser.add_argument("town", nargs="?", help="Edition slug: " + ", ".join(PUBLISHABLE_ORDER) + " (maine is the current statewide edition)")
     parser.add_argument("date", nargs="?", help="Send date YYYY-MM-DD")
     parser.add_argument(
         "--rebuild",
@@ -737,9 +756,9 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("source, town and date are required unless --rebuild is given")
 
     town = args.town.lower().strip()
-    if town not in TOWNS:
+    if town not in PUBLISHABLE_ORDER:
         raise SystemExit(
-            f"Unknown town {args.town!r}. Use one of: {', '.join(TOWN_ORDER)}"
+            f"Unknown town {args.town!r}. Use one of: {', '.join(PUBLISHABLE_ORDER)}"
         )
     try:
         send_date = date.fromisoformat(args.date)
