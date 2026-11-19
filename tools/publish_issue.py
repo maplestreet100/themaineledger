@@ -34,9 +34,9 @@ PAST_TOWN_ORDER = ["brunswick", "topsham", "bath"]
 ALL_TOWNS = {**TOWNS, **PAST_TOWNS}
 ALL_TOWN_ORDER = TOWN_ORDER + PAST_TOWN_ORDER
 
-# Slugs that can still be published: every current edition, plus Brunswick
-# (past, but kept publishable in case a late local issue needs archiving).
-PUBLISHABLE_ORDER = TOWN_ORDER + ["brunswick"]
+# Slugs that can be published: only the statewide edition (Ben, Nov 19, 2026:
+# the statewide issue is the only edition on the site).
+PUBLISHABLE_ORDER = list(TOWN_ORDER)
 
 # How an edition is named in archive headings, latest links and issue pages.
 EDITION_LABELS = {
@@ -562,27 +562,14 @@ def render_index(issues: list[dict]) -> str:
     for slug in by_town:
         by_town[slug].sort(key=lambda item: item["date"], reverse=True)
 
+    # Single-edition archive: one plain list of statewide issues, newest first.
     sections: list[str] = []
-    past = [slug for slug in PAST_TOWN_ORDER if by_town[slug]]
     for slug in TOWN_ORDER:
-        # Name the current edition when there is anything else on the page
-        # (other current editions or past ones), so the groups read clearly.
-        if len(TOWN_ORDER) > 1 or past:
-            sections.append(
-                f'    <h2 id="{slug}">{html_lib.escape(edition_label(slug))}</h2>'
-            )
         items = by_town[slug]
         if not items:
             sections.append('    <p class="archive-empty">No issues yet.</p>')
             continue
         sections.extend(render_issue_items(slug, items))
-
-    # Past editions appear only if they have sent issues, under one heading,
-    # so they read as past issues and not as editions to subscribe to.
-    if past:
-        sections.append('    <h2 id="past">Past editions</h2>')
-        for slug in past:
-            sections.extend(render_issue_items(slug, by_town[slug]))
 
     head = CHROME_HEAD.format(
         title="Archive · The Maine Ledger",
@@ -724,7 +711,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "source", nargs="?", help="Issue HTML file, or a directory containing one"
     )
-    parser.add_argument("town", nargs="?", help="Edition slug: " + ", ".join(PUBLISHABLE_ORDER) + " (maine is the current statewide edition)")
+    parser.add_argument("town", nargs="?", help="Edition slug: " + ", ".join(PUBLISHABLE_ORDER) + " (the statewide edition)")
     parser.add_argument("date", nargs="?", help="Send date YYYY-MM-DD")
     parser.add_argument(
         "--rebuild",

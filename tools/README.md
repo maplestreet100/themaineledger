@@ -15,7 +15,7 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 ```
 
 - `<issue.html or directory>`: path to the sent email HTML, or a directory that contains one `.html` file (or one `em_*.html` file). JSON sidecars in that directory are ignored.
-- `<town>`: `maine` for the statewide edition (current and default, from Nov 20, 2026; labeled "Statewide Edition"). `brunswick` can still be published but is listed under "Past editions". Bath and Topsham are past editions that can no longer be published; their issues stay in the archive. Harpswell (Nov 15) and Freeport (Nov 17) were dropped and their pages removed.
+- `<town>`: `maine`, the statewide edition and the only edition on the site (from Nov 20, 2026; labeled "Statewide Edition"). Other slugs are rejected.
 - `<yyyy-mm-dd>`: the real send date, not the usual edition weekday.
 - `--title`: required if the HTML has no `<title>`. Use the email subject. This is stored as `title`.
 - `--subject`: optional display subject for the archive listing and the issue page header. Stored as `display_subject`.
@@ -28,12 +28,12 @@ python3 tools/publish_issue.py path/to/em_example.html maine 2026-11-20 --title 
 
 ### Latest-edition links
 
-Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each publishable town (maine, brunswick) that has at least one issue. Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
+Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<town>/index.html` for each publishable town (maine) that has at least one issue. Both are tiny redirect pages that open that town's newest issue, so these URLs never change:
 
 - https://themaineledger.com/archive/maine/latest/ (statewide, the default; exists once the first maine issue is published)
-- (The Brunswick Nov 13, 2026 issue was deleted from the archive on Nov 19, 2026 at Ben's request; brunswick has no archive pages now.)
+- (Earlier local editions were removed from the site on Nov 19, 2026 at Ben's request.)
 
-A town with no issues yet gets no redirect pages. The archive index shows the Statewide Edition first ("No issues yet." until the first one), then "Past editions" when a past edition has issues. The pages are marked noindex. To regenerate the index and these links without publishing anything:
+A town with no issues yet gets no redirect pages. The archive index is one plain list of statewide issues, newest first ("No issues yet." until the first one). The pages are marked noindex. To regenerate the index and these links without publishing anything:
 
 ```
 python3 tools/publish_issue.py --rebuild
@@ -45,7 +45,7 @@ Each archive row shows the date first (`Tue., Nov. 10, 2026`), then the display 
 
 If `--subject` is not passed:
 
-1. If the sent subject (`--title`) is already `<Town>: <top story>` (for example `Brunswick: Data center pause vote possible Monday`), use it as-is. Future sends use this syntax, usually under about 50 characters.
+1. If the sent subject (`--title`) is already `<Town>: <top story>` (for example `Maine: <top story>`), use it as-is. Future sends use this syntax, usually under about 50 characters.
 2. If the title is an older style such as `The Maine Ledger · ...`, strip the brand, town name, and any trailing weekday or date. If nothing meaningful remains, use the first story headline in the email HTML after the masthead (a real headline, not a date or section label). If no headline can be read reliably, use `<Town> edition`.
 
 `--subject` always overrides. The script does not invent wording. The original email subject stays in `title`.
