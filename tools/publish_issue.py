@@ -140,7 +140,7 @@ CHROME_HEAD = """<!doctype html>
   <div class="mast-row">
     <p class="nameplate"><a href="/">The Maine Ledger</a></p>
   </div>
-  <div class="edition">Brunswick Edition</div>
+  <div class="edition">Statewide Edition</div>
   <div class="dateline"><span class="dl-date" id="today"></span></div>
 </header>
 <nav class="site-nav" aria-label="Site">
@@ -527,10 +527,8 @@ def render_issue_items(slug: str, items: list[dict]) -> list[str]:
         subject = item.get("display_subject") or derive_subject_from_title(
             item["title"], label
         ) or f"{label} edition"
-        # One current edition (Brunswick): the masthead already names it, so the
-        # archive list drops the leading "Brunswick: " (Ben, Nov 17 2026).
-        if len(TOWN_ORDER) == 1 and slug in TOWNS and subject.startswith(f"{label}: "):
-            subject = subject[len(label) + 2:]
+        # The masthead is statewide now (Nov 19 2026), so town issues keep
+        # their "Brunswick: " prefix in the list to say which edition they were.
         subject = html_lib.escape(subject)
         lines.append(
             f'      <li>'
@@ -551,8 +549,8 @@ def render_index(issues: list[dict]) -> str:
 
     sections: list[str] = []
     for slug in TOWN_ORDER:
-        # One current edition (Brunswick, Nov 17 2026): the lede names it, so no
-        # town subheading. With 2+ editions each gets its own heading again.
+        # One current edition: no town subheading; the "Town: " prefix on each
+        # item names it. With 2+ editions each gets its own heading again.
         if len(TOWN_ORDER) > 1:
             sections.append(
                 f'    <h2 id="{slug}">{html_lib.escape(TOWNS[slug])}</h2>'
