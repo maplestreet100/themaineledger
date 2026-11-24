@@ -32,7 +32,7 @@ Every publish also rewrites `archive/<town>/latest/index.html` and `archive/<tow
 
 - https://themaineledger.com/archive/brunswick/latest/
 
-A town with no issues yet redirects to the archive page (`/archive/`). The old `archive/maine/` and `archive/maine/latest/` redirects are static files that keep pointing at the Nov 20, 2026 statewide issue; the script no longer rewrites them. The pages are marked noindex. To regenerate the index and these links without publishing anything:
+A town with no issues yet redirects to the archive page (`/archive/`). The pages are marked noindex. To regenerate the index and these links without publishing anything:
 
 ```
 python3 tools/publish_issue.py --rebuild
