@@ -15,7 +15,7 @@ python3 tools/publish_issue.py <issue.html or directory> <town> <yyyy-mm-dd> [--
 ```
 
 - `<issue.html or directory>`: path to the sent email HTML, or a directory that contains one `.html` file (or one `em_*.html` file). JSON sidecars in that directory are ignored.
-- `<town>`: `brunswick` (the only current edition). Harpswell (Nov 15) and Freeport (Nov 17) were dropped and their pages removed. Bath and Topsham are no longer published; their past issues stay in the archive under "No longer published". The statewide edition (`maine`) ran once, on Nov 20, 2026; it can no longer be published, and its issue is listed under "No longer published" with a "Statewide: " prefix. Past-edition rows always carry their edition prefix so they do not read as Brunswick issues.
+- `<town>`: `brunswick` (the only current edition). Harpswell (Nov 15) and Freeport (Nov 17) were dropped and their pages removed. Bath and Topsham are no longer published; their past issues stay in the archive under "No longer published". The statewide edition (`maine`) ran once, on Nov 20, 2026, and was later dropped from the archive; it can no longer be published. If a caller still passes `maine` (or another unknown slug) and the sent subject starts with `Brunswick:`, the script files the issue under Brunswick and prints a warning. Past-edition rows always carry their edition prefix so they do not read as Brunswick issues.
 - `<yyyy-mm-dd>`: the real send date, not the usual edition weekday.
 - `--title`: required if the HTML has no `<title>`. Use the email subject. This is stored as `title`.
 - `--subject`: optional display subject for the archive listing and the issue page header. Stored as `display_subject`.

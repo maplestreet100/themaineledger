@@ -275,6 +275,40 @@ def is_town_subject_title(title: str) -> bool:
     return bool(TOWN_SUBJECT_RE.match(title.strip()))
 
 
+def infer_current_town_from_title(title: str | None) -> str | None:
+    """If title starts with a current edition's 'Name: ', return that slug."""
+    if not title:
+        return None
+    text = title.strip()
+    for slug, label in TOWNS.items():
+        if re.match(rf"^{re.escape(label)}:\s+\S", text, re.I):
+            return slug
+    return None
+
+
+def resolve_publish_town(
+    given: str, title: str, subject_override: str | None = None
+) -> str:
+    """Accept a current slug, or infer one from a 'Brunswick: ...' subject."""
+    town = given.lower().strip()
+    if town in TOWNS:
+        return town
+    inferred = infer_current_town_from_title(
+        subject_override
+    ) or infer_current_town_from_title(title)
+    if inferred:
+        print(
+            f"Warning: slug {given!r} is not a current edition; "
+            f"using {inferred!r} because the subject starts with "
+            f"{TOWNS[inferred] + ':'!r}.",
+            file=sys.stderr,
+        )
+        return inferred
+    raise SystemExit(
+        f"Unknown town {given!r}. Use one of: {', '.join(TOWN_ORDER)}"
+    )
+
+
 def is_old_style_title(title: str) -> bool:
     return bool(re.match(r"^The\s+Maine\s+Ledger\b", title.strip(), re.I))
 
@@ -743,11 +777,6 @@ def main(argv: list[str] | None = None) -> int:
     if not (args.source and args.town and args.date):
         parser.error("source, town and date are required unless --rebuild is given")
 
-    town = args.town.lower().strip()
-    if town not in TOWNS:
-        raise SystemExit(
-            f"Unknown town {args.town!r}. Use one of: {', '.join(TOWN_ORDER)}"
-        )
     try:
         send_date = date.fromisoformat(args.date)
     except ValueError:
@@ -760,6 +789,8 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit(
             "No title found in the HTML; pass --title with the email subject."
         )
+
+    town = resolve_publish_town(args.town, title, args.subject)
 
     cleaned, notes = clean_email(raw)
     display_subject, subject_source = choose_display_subject(
